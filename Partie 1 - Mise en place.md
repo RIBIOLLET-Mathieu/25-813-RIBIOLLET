@@ -56,7 +56,9 @@ A et B ont une adresse IP virtuelle configurée comme route par défaut, connue 
 
 ### <u> Question 4 </u>
 Le protocole OSPF est un protocol de routage permettant à tous les routeurs de la topologie d'avoir la même "vue" du réseau. Grâce à l'algorithme SPF (Short Path First), utilisé par OSPF, les routeurs remplissent leur table de routage. OSPF est curcial pour garantir la connectivité.
+
 L'utilisation d'un routage statique n'est pas pertinent dans notre cas. Si sur le routeur RPROF1 (auquel nous n'avons pas forcèment accès) nous configurons une route statique vers notre réseau interne, il va tout le temps rediriger les paquets vers le routeur R1 (si c'est le prochain saut indiqué).
+
 Si R1 devient indisponible (mauvaise configuration, panne électrique ou physique,...) alors les réseaux internes perdront leur accessibilité aux réseaux externes.
 L'usage d'OSPF va résoudre ce souci en échangeant dynamiquement des informations sur les routes disponibles, cela permettra ainsi à R2 de prendre le relais.
 
