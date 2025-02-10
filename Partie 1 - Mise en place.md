@@ -18,13 +18,13 @@ Pour le routeur R1 nous pouvons avoir une table de routage comme présenté ci-d
 Une colonne "Justification" (fictive donc) permet d'expliquer le choix pertinent de la route.
 | Réseau destination |  Next-Hop  | Coût | Justification | 
 |-------------------:|------------|-----|-----|
-|  10.200.2.0/24     | DC int_R1_LAN |  X  | Réseau interne |
-|  10.250.0.0/24     | DC int_R1_WAN |  X  | VLAN 633 |
-|  10.100.9.0/24     | 10.250.0.18 |  X  | Réseau interne "Prof" |
-|  10.200.1.0/24     | 10.250.0.102|  X  | Exemple d'un réseau interne d'un autre binôme |
-|  192.168.176.0/24     | 10.250.0.254 |  X  | VLAN 176 |
-|  192.168.140.0/23     | 10.250.0.253 |  X  | VLAN 140 |
-|  0.0.0.0/0     | 10.250.0.254 |  X  | Route par défault |
+|  10.200.2.0/24 | DC int_R1_LAN |  X  | Réseau interne |
+|  10.250.0.0/24 | DC int_R1_WAN |  X  | VLAN 633 |
+|  10.100.9.0/24 | 10.250.0.18 |  X  | Réseau interne "Prof" |
+|  10.200.1.0/24 | 10.250.0.102|  X  | Exemple d'un réseau interne d'un autre binôme |
+|  192.168.176.0/24 | 10.250.0.254 |  X  | VLAN 176 |
+|  192.168.140.0/23 | 10.250.0.253 |  X  | VLAN 140 |
+|  0.0.0.0/0 | 10.250.0.254 |  X  | Route par défault |
 
 Table de routage limitée de R2 :
 | Réseau destination | Next-Hop | Coût |
