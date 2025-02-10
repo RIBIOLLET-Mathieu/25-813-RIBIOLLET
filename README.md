@@ -17,4 +17,4 @@ Objectifs des TPs et du mini-projet
 - Travailler sur un mini-projet sur des outils de supervision (Prometheus / Grafana / Netflow)
 
 Table des matières :
-- [Partie 1 - Mise en place](Partie\1\-\Mise\en\place.md)
+- [Partie\1\-\Mise\en\place.md](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie%201%20-%20Mise%20en%20place.md#:~:text=Mise%20en%20place.-,md,-README.md)
