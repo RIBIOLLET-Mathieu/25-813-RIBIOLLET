@@ -73,12 +73,70 @@ La configuration de ces machines sera faîte en 4 étapes. Etant seul pour ce mi
 
 ## 3.3.1 Etape 1 - Création VMs A et R1, configuration IP
 ### <u> Question 5 </u>
+Afin de tester la configuration effectuée à cette étape, le test ci-dessous seront réalisés :
+Sur A : 
+- Ping <@IP_R1_LAN>
+Réponse attendu :
+- Positif
+Résultat du test après configuration :
+- OK
+
+Ce test nous permet de vérifier 2 choses, que A a une configuration IP correcte (adresse de sous-réseau, passerelle par défaut (IP de R1) correcte) et que R1 a également une configuration IP correcte.
 
 ## 3.3.2 Etape 2 - Configuration OSPF dans R1
 ### <u> Question 6 </u>
+Pour tester la mise en place du protocole OSPF nous allons, avant la mise en place, observer notre table de routage sur R1.
+Cette dernière ne contient pas de route OSPF. Elle ne contient également pas de route vers les VLAN 140 et VLAN 176.
+
+Après la mise en place d'OSPF, tous les réseaux internes des autres binômes ayant configuré OSPF sur leur(s) routeur(s) apparaissent. Les routes pour accèder aux VLAN 140 et VLAN 176. 
+Nous avons également testé l'accès à internet des machines du réseau internes :
+Sur A :
+- Ping 8.8.8.8
+Réponse attendu :
+- Positif
+Résultat du test après configuration :
+- OK
 
 ## 3.3.3 Etape 3 -Création VMs B et R2, configuration IP et OSPF
+Dans cette partie nous effectuons la configuration IP de la machine B et du routeur R2. Cette configuration est semblable à l'étape 1 et 2.
+Sur B, la passerelle par défaut a été définie à 10.200.2.253 (@IP de l'interface réseau interne) afin de tester la configuration IP de B et R2.
+Sur B :
+- Ping 8.8.8.8
+Réponse attendu :
+- Positif
+Résultat du test après configuration :
+- OK
 
 ## 3.3.4 Etape 4 - Mise en place VRRP
 ### <u> Question 7 </u>
+La mise en place de VRRP a été effectuée dans R1 et R2. Sur les machines internes (A et B), la route par défault à été changé par l'@IP virtuelle : 10.200.2.100
 
+Testons divers scénarios
+1) Les 2 routeurs sont UP
+- L'état VRRP de R1 est Master
+- L'état VRRP de R2 est Backup
+Sur A :
+- Ping 8.8.8.8
+Réponse attendu :
+- Positif
+Résultat du test après configuration :
+- OK
+
+2) R1 est DOWN, R2 est UP
+- L'état VRRP de R1 est passé à Init
+- L'état VRRP de R2 est passé à Master
+Sur A :
+- Ping 8.8.8.8
+Réponse attendu :
+- Positif
+Résultat du test après configuration :
+- OK
+=> R2 a donc bien pris le rôle de Master
+
+3) R1 et R2 sont DOWN
+Sur A :
+- Ping 8.8.8.8
+Réponse attendu :
+- Négatif
+Résultat du test après configuration :
+- OK (ping négatif)
