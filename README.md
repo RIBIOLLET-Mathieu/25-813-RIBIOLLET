@@ -15,3 +15,6 @@ Objectifs des TPs et du mini-projet
 - Mettre en place une supervision et une métrologie à l'aide du protocol SNMP
 - Développer un script Bash de mesure de débit
 - Travailler sur un mini-projet sur des outils de supervision (Prometheus / Grafana / Netflow)
+
+Table des matières :
+- [Partie 1 - Mise en place](Partie\1\-\Mise\en\place.md)
