@@ -9,9 +9,9 @@ Objectifs
 
 Le réseau déployé lors de ce mini-projet est le suivant.
 <picture>
- <source media="(prefers-color-scheme: dark)" srcset="https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Sche%CC%81ma%20re%CC%81seau%20ETRS813%20-%20Mini%20projet%20supervision.png">
- <source media="(prefers-color-scheme: light)" srcset="https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Sche%CC%81ma%20re%CC%81seau%20ETRS813%20-%20Mini%20projet%20supervision.png">
- <img alt="YOUR-ALT-TEXT" src="https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Sche%CC%81ma%20re%CC%81seau%20ETRS813%20-%20Mini%20projet%20supervision.png">
+ <source media="(prefers-color-scheme: dark)" srcset="https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/ETRS813%20-%20B10%20-%20Mini-projet%20Supervision.png">
+ <source media="(prefers-color-scheme: light)" srcset="https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/ETRS813%20-%20B10%20-%20Mini-projet%20Supervision.png">
+ <img alt="YOUR-ALT-TEXT" src="https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/ETRS813%20-%20B10%20-%20Mini-projet%20Supervision.png">
 </picture>
 
 **************************************************
