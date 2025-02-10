@@ -16,7 +16,7 @@ Le réseau déployé lors de ce mini-projet est le suivant.
 
 **************************************************
 # 3.2 Etude théorique préparatoire
-### Question 1
+### <u> Question 1 </u>
 Dans la théorie, nous utilisons le protocole OSPF comme protocole de routage. Nous apprenons donc :
 - x9 routes vers le sous-réseau des autres binômes.
 - x2 route vers les sous-réseaux directement connectés (Le notre et le VLAN633)
@@ -40,10 +40,10 @@ Une colonne "Justification" (fictive donc) permet d'expliquer le choix pertinent
 
 La table de routage du routeur R2 sera semblable à celle de R1.
 
-### Question 2
+### <u> Question 2 </u>
 Le protocole VRRP (Virtual Router Redundancy Protocol) assure la redondance de la passerelle par défaut en utilisant une adresse IP virtuelle associé à un groupe de routeurs. Avec VRRP nous avons la présence d'un routeur maître, assurant le service de routage, ect. En cas de défaillance de ce dernier, VRRP sélectionne le routeur esclave (ou secondaire) enfin d'assurer la continuité du service.
 
-### Question 3 
+### <u> Question 3 </u>
 La configuration VRRP, théoriquement mise en place sur R1 et R2, permet d'assurer la disponibilité aux réseaux externes pour les machines A et B. Les réseaux externes sont disponibles tant que R1 et R2 fonctionnent correctement.
 Fonctionnment résumé de VRRP :
 1) Élection du routeur maître : Un routeur est désigné comme maître et possède l’adresse IP virtuelle associée au routeur virtuel. Il gère le trafic des machines A et B. Dans notre exemple, disons que c'est R1.
@@ -54,7 +54,7 @@ Les informations VRRP circulent sur le réseau dans des messages "VRRP Advertiss
 
 A et B ont une adresse IP virtuelle configurée comme route par défaut, connue par les routeurs R1 et R2. Les messages "VRRP Advertissement Messages", envoyé périodiquement par le maître en multicast, contiennent une valeur de priorité qui est indiqué aux machines A et B. Les machines savent donc qu'elles doivent envoyer leurs paquets vers le routeur maître.
 
-### Question 4
+### <u> Question 4 </u>
 Le protocole OSPF est un protocol de routage permettant à tous les routeurs de la topologie d'avoir la même "vue" du réseau. Grâce à l'algorithme SPF (Short Path First), utilisé par OSPF, les routeurs remplissent leur table de routage. OSPF est curcial pour garantir la connectivité.
 L'utilisation d'un routage statique n'est pas pertinent dans notre cas. Si sur le routeur RPROF1 (auquel nous n'avons pas forcèment accès) nous configurons une route statique vers notre réseau interne, il va tout le temps rediriger les paquets vers le routeur R1 (si c'est le prochain saut indiqué).
 Si R1 devient indisponible (mauvaise configuration, panne électrique ou physique,...) alors les réseaux internes perdront leur accessibilité aux réseaux externes.
@@ -72,13 +72,13 @@ En somme, l'utilisation conjointe d'OSPF et de VRRP offre une solution complète
 La configuration de ces machines sera faîte en 4 étapes. Etant seul pour ce mini-projet j'ai réalisé les 4 étapes moi-même.
 
 ## 3.3.1 Etape 1 - Création VMs A et R1, configuration IP
-### Question 5
+### <u> Question 5 </u>
 
 ## 3.3.2 Etape 2 - Configuration OSPF dans R1
-### Question 6
+### <u> Question 6 </u>
 
 ## 3.3.3 Etape 3 -Création VMs B et R2, configuration IP et OSPF
 
 ## 3.3.4 Etape 4 - Mise en place VRRP
-### Question 7
+### <u> Question 7 </u>
 
