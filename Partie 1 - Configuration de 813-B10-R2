@@ -1,0 +1,131 @@
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no platform punt-keepalive disable-kernel-core
+platform console virtual
+!
+hostname 813-B10-R2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password password
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+!
+multilink bundle-name authenticated
+!
+!
+license udi pid CSR1000V sn 98XQR4RL29V
+license boot level premium
+spanning-tree extend system-id
+!
+!
+redundancy
+ mode none
+!
+!
+!         
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
+!
+interface Loopback1
+ ip address 10.20.2.2 255.255.255.255
+!
+interface GigabitEthernet1
+ ip address dhcp
+ negotiation auto
+!
+interface GigabitEthernet2
+ ip address 10.200.2.253 255.255.255.0
+ negotiation auto
+ vrrp 1 description Router virtuel 2
+ vrrp 1 ip 10.200.2.100
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet3
+ ip address 10.250.0.104 255.255.255.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet4
+ no ip address
+ shutdown
+ negotiation auto
+!
+router ospf 1
+ router-id 10.20.2.2
+ network 10.200.2.0 0.0.0.255 area 0
+ network 10.250.0.0 0.0.0.255 area 0
+!
+!
+virtual-service csr_mgmt
+!         
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0
+ password password
+ login
+line vty 1
+ password password
+ login
+ length 0
+line vty 2 4
+ password password
+ login
+!
+!
+end
