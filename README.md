@@ -18,5 +18,5 @@ Objectifs des TPs et du mini-projet
 
 Table des matières :
 - [Partie 1 - Mise en place](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie%201%20-%20Mise%20en%20place.md#:~:text=Mise%20en%20place.-,md,-README.md)
-- [Partie 1 - Configuration de 813-B10-R1](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie%201%20-%20Configuration%20de%20813-B10-R1)
-- [Partie 1 - Configuration de 813-B10-R2](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie%201%20-%20Configuration%20de%20813-B10-R2)
+  - [Partie 1 - Configuration de 813-B10-R1](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie%201%20-%20Configuration%20de%20813-B10-R1)
+  - [Partie 1 - Configuration de 813-B10-R2](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie%201%20-%20Configuration%20de%20813-B10-R2)
