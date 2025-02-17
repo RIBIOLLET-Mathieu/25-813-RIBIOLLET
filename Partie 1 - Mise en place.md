@@ -120,7 +120,7 @@ Testons divers scénarios
 Sur A et sur B :
 - Ping 8.8.8.8
 Réponse attendu :
-- Positif et passerelle par défaut : R1
+- Positif et passerelle par défaut -> R1
 Résultat du test après configuration :
 - OK
 
@@ -130,7 +130,7 @@ Résultat du test après configuration :
 Sur A :
 - Ping 8.8.8.8
 Réponse attendu :
-- Positif et passerelle par défaut : R2
+- Positif et passerelle par défaut -> R2
 Résultat du test après configuration :
 - OK
 => R2 a donc bien pris le rôle de Master
@@ -143,4 +143,4 @@ Réponse attendu :
 Résultat du test après configuration :
 - OK (ping négatif)
 
-Les tests réalisés confirme la théorie. Notre configuration VRRP est donc correcte.
+Les tests ont été réalisés en utilisant la commande "tracepath 8.8.8.8". Leur résultat confirme la théorie. Notre configuration VRRP est donc correcte.
