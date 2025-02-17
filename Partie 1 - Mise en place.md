@@ -117,10 +117,10 @@ Testons divers scénarios
 1) Les 2 routeurs sont UP
 - L'état VRRP de R1 est Master
 - L'état VRRP de R2 est Backup
-Sur A :
+Sur A et sur B :
 - Ping 8.8.8.8
 Réponse attendu :
-- Positif
+- Positif et passerelle par défaut : R1
 Résultat du test après configuration :
 - OK
 
@@ -130,7 +130,7 @@ Résultat du test après configuration :
 Sur A :
 - Ping 8.8.8.8
 Réponse attendu :
-- Positif
+- Positif et passerelle par défaut : R2
 Résultat du test après configuration :
 - OK
 => R2 a donc bien pris le rôle de Master
@@ -142,3 +142,5 @@ Réponse attendu :
 - Négatif
 Résultat du test après configuration :
 - OK (ping négatif)
+
+Les tests réalisés confirme la théorie. Notre configuration VRRP est donc correcte.
