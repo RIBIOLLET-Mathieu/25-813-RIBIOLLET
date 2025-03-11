@@ -23,4 +23,4 @@ Table des matières :
   - [Partie 1 - Configuration de 813-B10-R1](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie%201%20-%20Configuration%20de%20813-B10-R1)
   - [Partie 1 - Configuration de 813-B10-R2](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie%201%20-%20Configuration%20de%20813-B10-R2)
 
-- [Partie 2 - Mise en place](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie%202%20-%20Supervision%20et%20m%C3%A9trologie.-,md,-README.md)
+- [Partie 2 - Mise en place](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie%202%20-%20Supervision%20et%20m%C3%A9trologie)
