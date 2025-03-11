@@ -42,7 +42,7 @@ SNMP utilise l'encodage ASN.1 (définit des structures de données) avec le BER 
 
 ### <u> Question 10 </u>
 Afin de récupérer les informations sur le MTU de la 2e interface d'un de nos routeurs nous devons connaitre le OID associé à ce MTU. Suite à une recherche internet nous avons déterminé cet OID : 1.3.6.1.2.1.2.2.1.4.2
-Afin de réaliser la capture nous avons :
+Pour réaliser la capture nous avons :
 1) Préparer une capture de traffic dans un premier terminal sur la machine A avec la commande ``` sudo tshark -i enp0s8 -Y "snmp" -O snmp -x ```
 2) Utiliser la commande ``` snmpget -v2c -c 123test123 10.200.2.254 1.3.6.1.2.1.2.2.1.4.2 ``` sur un deuxieme terminal sur A
 
@@ -67,6 +67,13 @@ Trame réponse :
 0050  06 01 02 01 02 02 01 04 02 02 02 05 dc            .............
 ```
 
+Analysons ces trames :
+|Type de trame | En-tête IP  | En-tête UDP | Version | Communauté  | PDU Type  | Id requête | Status d'erreur | Index d'erreur | Nom (OID) | Valeur |
+|--------------|-------------|-------------|---------|-------------|-----------|------------|-----------------|----------------|-----------|--------|
+| Requête | @IP_src : 10.200.2.10 | @IP_dst : 10.200.2.254 | 48147 → 161 | 2 (SNMPv2) | test123 | GET (A0) | 2DCE9B1C | 0 | 0 | 1.3.6.1.2.1.2.2.1.4.2 | ? (Pas de valeur sur une requête) |
+| Réponse | @IP_src : 10.200.2.254 | @IP_dst :  10.200.2.10 | 161 → 48147 | 2 (SNMPv2) | test123 | RESPONSE (A2) | 2DCE9B1C | 0 | 0 | 1.3.6.1.2.1.2.2.1.4.2 | 1500 |
+
+On observe donc bien la valeur d'OID demander via la commande ci-dessus. La version SNMP est bien la version 2 et le port utilisé est UDP. Cela correspond à ce qu'on a vu en cours.
 
 ### <u> Question 11 </u>
 
