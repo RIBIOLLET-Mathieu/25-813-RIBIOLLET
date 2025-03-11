@@ -76,14 +76,30 @@ Analysons ces trames :
 On observe donc bien la valeur d'OID demander via la commande ci-dessus. La version SNMP est bien la version 2 et le port utilisé est UDP. Cela correspond à ce qu'on a vu en cours.
 
 ### <u> Question 11 </u>
+Dans cette question nous nous intéressons à la MIB VRRP ainsi que le fichier contenant la description de cette dernière. Après avoir effectué des recherches sur Internet nous avons relevé la ligne indiquant l'OID relatif de la branche VRRP.
+```vrrp OBJECT IDENTIFIER ::= { mib-2 68 }```
 
-
+En en conclut l'OID complet : 1.3.6.1.2.1.68
 
 ### <u> Question 12 </u>
+Nous avons exécuté la commande ```snmpwalk -v2c -c 123test123 10.100.2.254 vrrpMIB```, mais celle-ci a échoué avec l'erreur : "vrrpMIB: Unknown Object Identifier (Sub-id not found: (top) -> vrrpMIB)".
+En revanche, la commande ```snmpwalk -v2c -c 123test123 10.100.2.254 mib-2.68``` a fonctionné correctement.
 
-
+L'échec de la première commande est dû au fait que l'agent SNMP ne reconnaît pas vrrpMIB comme un OID valide. Dans la seconde commande, l'OID numérique est utilisé directement, ce qui permet son identification par l'agent. Autrement dit, la correspondance entre vrrpMIB et la valeur 68 n'a pas été réalisée par l'agent SNMP.
 
 ### <u> Question 13 </u>
+On s'intéresse ici à la table "vrrpOperTable". Son OID est mib-2.68.1.3
+Les 8 premières colonnes sont les suivantes :
+| OID                               | Valeur                 | Explication |
+|---------------------------------------|----------------------------|-----------------|
+| `mib-2.68.1.3.1.2.2.1`  | `00 00 5E 00 01 01`      | Adresse MAC VRRP |
+| `mib-2.68.1.3.1.3.2.1`  | `3`                      | État du routeur VRRP (3 = `master`, 2 = `backup`, 1 = `init`) |
+| `mib-2.68.1.3.1.4.2.1`  | `1`                      | Nombre d'adresses IP associées au routeur virtuel |
+| `mib-2.68.1.3.1.5.2.1`  | `200`                    | Priorité du routeur |
+| `mib-2.68.1.3.1.6.2.1`  | `1`                      | Mode de préemption (1 = activé, 2 = désactivé) |
+| `mib-2.68.1.3.1.7.2.1`  | `10.100.2.252`           | Adresse IP du routeur maître actuel |
+| `mib-2.68.1.3.1.8.2.1`  | `10.100.2.254`           | Adresse IP principale du routeur VRRP |
+| `mib-2.68.1.3.1.9.2.1`  | `1`                      | Version VRRP utilisée (`1 = VRRPv2`, `2 = VRRPv3`) |
 
 
 
