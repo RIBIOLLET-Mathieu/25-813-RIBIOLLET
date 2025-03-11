@@ -21,7 +21,7 @@ snmpget -v3 -u snmpuser -l authPriv -a SHA -A auth_pass -x AES -X crypt_pass <IP
 ```
 Par exemple, pour le routeur 813-B10-R2, nous avons le résultat suivant :
 ```
-SNMPv2-MIB::sysLocation.0 = STRING: "ETRS813 - BinC4me10 Routeur 2 - UniversitC) Savoie Mont Blanc"
+SNMPv2-MIB::sysLocation.0 = STRING: "ETRS813 - Binôme10 Routeur 2 - Université Savoie Mont Blanc"
 ```
 C'est bel et bien la valeur que nous avons configuré précèdemment. La configuration sur R2 est donc correcte et la commande également.
 
