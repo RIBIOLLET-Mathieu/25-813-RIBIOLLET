@@ -103,13 +103,27 @@ On s'intéresse ici à la table "vrrpOperTable". Son OID est mib-2.68.1.3 .Les 8
 
 **************************************************
 # 4.3 Métrologie
-### <u> Question 15 </u>
+Dans cette partie nous nous intéressons aux possibilités offertes par SNMP pour observer les performances du réseau.
 
+### <u> Question 14 </u>
+Le protocole de transport utilisé pour le test de débit entre les deux machines A et B est ``` ```
+
+
+### <u> Question 15 </u>
+Le débit calculé par capinfos est plus élevé que le débit généré par iper car ``` ```
 
 
 ### <u> Question 16 </u>
+Si nous réalisons l'observation avec les compteurs 32 bits il nous faudra utiliser les OID suivants :
+- ifInOctets : 1.3.6.1.2.1.2.2.1.10
+- ifOutOctets : 1.3.6.1.2.1.2.2.1.16
+On utilisera ces OID pour observer un faible débit (max 4 Go). Dans notre cas le traffic sur notre réseau est très faible, nous allons donc utiliser des compteurs 32 bits.
 
-
+Et en 64 bits nous utiliserons les OID suivants :
+- ifHCInOctets : 1.3.6.1.2.1.31.1.1.1.6
+- ifHCOutOctets : 1.3.6.1.2.1.31.1.1.1.10
+A contrario, ces compteurs sont recommandés lorsque le volument de trafic est élevé.
 
 ### <u> Question 17 </u>
+Manipulation simple permmettant de trouver le débit entrant :
 
