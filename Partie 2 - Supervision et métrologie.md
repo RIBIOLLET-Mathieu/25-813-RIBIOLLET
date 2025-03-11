@@ -70,8 +70,8 @@ Trame réponse :
 Analysons ces trames :
 |Type de trame | En-tête IP  | En-tête UDP | Version | Communauté  | PDU Type  | Id requête | Status d'erreur | Index d'erreur | Nom (OID) | Valeur |
 |--------------|-------------|-------------|---------|-------------|-----------|------------|-----------------|----------------|-----------|--------|
-| Requête | @IP_src : 10.200.2.10 | @IP_dst : 10.200.2.254 | 48147 → 161 | 2 (SNMPv2) | test123 | GET (A0) | 2DCE9B1C | 0 | 0 | 1.3.6.1.2.1.2.2.1.4.2 | ? (Pas de valeur sur une requête) |
-| Réponse | @IP_src : 10.200.2.254 | @IP_dst :  10.200.2.10 | 161 → 48147 | 2 (SNMPv2) | test123 | RESPONSE (A2) | 2DCE9B1C | 0 | 0 | 1.3.6.1.2.1.2.2.1.4.2 | 1500 |
+| Requête | @IP_src : 10.200.2.10 / @IP_dst : 10.200.2.254 | 48147 → 161 | 2 (SNMPv2) | test123 | GET (A0) | 2DCE9B1C | 0 | 0 | 1.3.6.1.2.1.2.2.1.4.2 | ? (Pas de valeur sur une requête) |
+| Réponse | @IP_src : 10.200.2.254 / @IP_dst :  10.200.2.10 | 161 → 48147 | 2 (SNMPv2) | test123 | RESPONSE (A2) | 2DCE9B1C | 0 | 0 | 1.3.6.1.2.1.2.2.1.4.2 | 1500 |
 
 On observe donc bien la valeur d'OID demander via la commande ci-dessus. La version SNMP est bien la version 2 et le port utilisé est UDP. Cela correspond à ce qu'on a vu en cours.
 
