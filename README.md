@@ -5,8 +5,10 @@
 Paramètres réseaux attribués :
 - Réseau interne : 10.200.2.0/24
 - Switch interne : VLAN612
-- R1 interne : 10.250.0.103
+- R1 interne : 10.200.2.254
+- R1 externe : 10.250.0.103
 - R1 loopback : 10.20.2.1
+- R2 interne : 10.200.2.253
 - R2 externe : 10.250.0.104
 - R2 loopback : 10.20.2.2
 
