@@ -88,8 +88,7 @@ En revanche, la commande ```snmpwalk -v2c -c 123test123 10.100.2.254 mib-2.68```
 L'échec de la première commande est dû au fait que l'agent SNMP ne reconnaît pas vrrpMIB comme un OID valide. Dans la seconde commande, l'OID numérique est utilisé directement, ce qui permet son identification par l'agent. Autrement dit, la correspondance entre vrrpMIB et la valeur 68 n'a pas été réalisée par l'agent SNMP.
 
 ### <u> Question 13 </u>
-On s'intéresse ici à la table "vrrpOperTable". Son OID est mib-2.68.1.3
-Les 8 premières colonnes sont les suivantes :
+On s'intéresse ici à la table "vrrpOperTable". Son OID est mib-2.68.1.3 .Les 8 premières colonnes sont les suivantes :
 | OID                               | Valeur                 | Explication |
 |---------------------------------------|----------------------------|-----------------|
 | `mib-2.68.1.3.1.2.2.1`  | `00 00 5E 00 01 01`      | Adresse MAC VRRP |
@@ -100,7 +99,6 @@ Les 8 premières colonnes sont les suivantes :
 | `mib-2.68.1.3.1.7.2.1`  | `10.100.2.252`           | Adresse IP du routeur maître actuel |
 | `mib-2.68.1.3.1.8.2.1`  | `10.100.2.254`           | Adresse IP principale du routeur VRRP |
 | `mib-2.68.1.3.1.9.2.1`  | `1`                      | Version VRRP utilisée (`1 = VRRPv2`, `2 = VRRPv3`) |
-
 
 
 **************************************************
