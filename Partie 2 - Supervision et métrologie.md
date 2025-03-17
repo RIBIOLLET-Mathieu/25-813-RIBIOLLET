@@ -160,8 +160,8 @@ Manipulation simple permmettant de trouver le débit entrant :
     TX2=$(snmpget -v2c -c 123test123 -Oqv 10.200.2.254 1.3.6.1.2.1.2.2.1.16.3) # Mesure du nombre d'octets envoyés après 10 secondes
     echo "Débit sortant: $(( (TX2 - TX1) * 8 / 10 )) bits/s" # Calcul du débit sortant en bits par seconde
    ```
-On obtient presque la même valeur via la commande snmpget et la commande iperf3.
-Script -> Débit sortant: 1096766 bits/s, soit 1,10 Mbits/s
+On obtient presque la même valeur via la commande snmpget et la commande iperf3.\n
+Script -> Débit sortant: 1096766 bits/s, soit 1,10 Mbits/s\n
 Iperf3 -> Débit sortant : 1,01 Mbits/s
 
 
