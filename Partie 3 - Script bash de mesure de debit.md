@@ -11,7 +11,7 @@ La version finale du script permettra de :
 
 ### <u> Question 18 </u>
 Il est préférable d'utiliser Cron ou Systemd plutôt que sleep car cron est plus efficace (moins de consommation de ressources comparé à sleep qui garde le script en arrière plan). Cron est également plus précis dans les éxécutions régulières.
-Enfin, Cron permet un gestion simple en offrant des outils tels que des logs. Ces avantages justifie notre choix d'utiliser Cron pour lancer automatiquement ce script.
+Enfin, Cron permet un gestion simple en offrant des outils tels que des logs. Ces avantages justifient notre choix d'utiliser Cron pour lancer automatiquement le script.
 
 **************************************************
 # 5.1 Récupération du compteur d'octets
