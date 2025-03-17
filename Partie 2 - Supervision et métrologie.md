@@ -1,4 +1,4 @@
-# 3. Partie 2 - Supervision et métrologie avec SNMP
+# 4. Partie 2 - Supervision et métrologie avec SNMP
 Objectifs
 - Mise en place d'un agent SNMPv3 et SNMPv2
 - Sécurisation des trames SNMP
