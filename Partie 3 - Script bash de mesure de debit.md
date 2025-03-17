@@ -67,6 +67,15 @@ Plusieurs tests ont été menés, voici le contenu du fichier de sorti à la fin
 
 # 5.3 Lecture de la dernière ligne du fichier, calcul et enregistrement du débit
 ### <u> Question 19 </u>
+Pour tester notre script à ce jour (voir ci-dessous), nous procédons comme suit :
+
+1) Lancer le script une première fois
+   Lors de cette première exécution, le fichier de sortie contiendra uniquement une seule ligne, et la valeur de la variable "rate" sera égale à 0. Cette valeur est 
+   normale, car le script ne peut pas effectuer de comparaison avec un relevé précédent.
+
+2) Lancer le script une deuxième fois
+   Après cette deuxième exécution, le fichier de sortie affichera toujours la première ligne, inchangée. Une deuxième ligne apparaîtra, et cette fois-ci, une valeur sera  
+   attribuée à la variable "rate". Ce débit correspond à la différence entre les valeurs d'octets et le temps écoulé entre la première et la deuxième mesure.
 
 Script à la fin de cette étape :
 ```
