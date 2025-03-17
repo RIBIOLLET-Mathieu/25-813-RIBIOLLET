@@ -104,14 +104,39 @@ On s'intéresse ici à la table "vrrpOperTable". Son OID est mib-2.68.1.3 .Les 8
 **************************************************
 # 4.3 Métrologie
 Dans cette partie nous nous intéressons aux possibilités offertes par SNMP pour observer les performances du réseau.
+Désactiver le processus faisant pare-feu sur B fût nécessaire afin de réaliser l'étude.
 
 ### <u> Question 14 </u>
-Le protocole de transport utilisé pour le test de débit entre les deux machines A et B est ``` ```
-
+Le protocole de transport utilisé pour le test de débit entre les deux machines A et B est ``` TCP ``` (utilisé par défaut). Le protocole UDP peut-être utilisé avec l'option -u. (iperf3 -c <@IP_B> -u)
+Iperf3 réalise 10 mesures, une toutes les secondes, soit 10s pour la durée de la mesure.
+On observe un débit moyen de 2,62 Gbits/s entre nos 2 machines.
+```
+[root@813-B10-A etudiant]# iperf3 -c 10.200.2.11
+Connecting to host 10.200.2.11, port 5201
+[  5] local 10.200.2.10 port 41148 connected to 10.200.2.11 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec   268 MBytes  2.25 Gbits/sec  906    247 KBytes       
+[  5]   1.00-2.00   sec   319 MBytes  2.68 Gbits/sec  990    189 KBytes       
+[  5]   2.00-3.00   sec   282 MBytes  2.36 Gbits/sec  1035    245 KBytes       
+[  5]   3.00-4.00   sec   339 MBytes  2.85 Gbits/sec  647    209 KBytes       
+[  5]   4.00-5.00   sec   286 MBytes  2.40 Gbits/sec  857    182 KBytes       
+[  5]   5.00-6.00   sec   297 MBytes  2.50 Gbits/sec  1215    182 KBytes       
+[  5]   6.00-7.00   sec   313 MBytes  2.63 Gbits/sec  1395    215 KBytes       
+[  5]   7.00-8.00   sec   340 MBytes  2.86 Gbits/sec  1358    170 KBytes       
+[  5]   8.00-9.00   sec   313 MBytes  2.62 Gbits/sec  1157    300 KBytes       
+[  5]   9.00-10.00  sec   365 MBytes  3.06 Gbits/sec  1575    199 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-10.00  sec  3.05 GBytes  2.62 Gbits/sec  11135             sender
+[  5]   0.00-10.00  sec  3.05 GBytes  2.62 Gbits/sec                  receiver
+```
 
 ### <u> Question 15 </u>
-Le débit calculé par capinfos est plus élevé que le débit généré par iper car ``` ```
+Sur B nous réalisons une capture de trame sur l'interface LAN (réseau 10.200.2.0/24) via la commande : ```tshark -w /tmp/capture-500k.pcap -i enp0s8 "udp port 5201"```
+Sur A nous lançons la commande iperf en précisant le protocole UDP comme protocole à utilisé (option -u) et on fixe la bande passante (option -b) à 500k.
+Après visualisé la capture avec la commande ```capinfos``` on observe un débit de 515kbits/s, ce qui est légérement plus élevé que le résultat annoncé par iperf3.
 
+Le débit calculé par capinfos est plus élevé que le débit généré par iperf3 car capinfos réalise un calcule de débit brut, c'est à dire que les en-têtes (Ethernet, IP, TCP) sont comprises dans le calcul.
 
 ### <u> Question 16 </u>
 Si nous réalisons l'observation avec les compteurs 32 bits il nous faudra utiliser les OID suivants :
@@ -126,4 +151,18 @@ A contrario, ces compteurs sont recommandés lorsque le volument de trafic est �
 
 ### <u> Question 17 </u>
 Manipulation simple permmettant de trouver le débit entrant :
+1) Lancer la commande ``` iperf3 -c 10.200.2.11 -t 30 -b 1M ``` sur A. Elle permet, via l'option "-t", de générer un flux via iperf mais plus longtemps que par défaut.
+2) Lancer le script sur A, mesurant le débit sortant (nommé 813-Q17-debit_out.sh).
+   Le .3 à la fin de l'OID fait référence à l'interface GigabitEthernet3 du routeur (interface qui est au niveau du réseau 10.250.0.0/24)
+   ```
+    TX1=$(snmpget -v2c -c 123test123 -Oqv 10.200.2.254 1.3.6.1.2.1.2.2.1.16.3) # Mesure du nombre d'octets envoyés
+    sleep 10
+    TX2=$(snmpget -v2c -c 123test123 -Oqv 10.200.2.254 1.3.6.1.2.1.2.2.1.16.3) # Mesure du nombre d'octets envoyés après 10 secondes
+    echo "Débit sortant: $(( (TX2 - TX1) * 8 / 10 )) bits/s" # Calcul du débit sortant en bits par seconde
+   ```
+On obtient presque la même valeur via la commande snmpget et la commande iperf3.
+Script -> Débit sortant: 1096766 bits/s, soit 1,10 Mbits/s
+Iperf3 -> Débit sortant : 1,01 Mbits/s
+
+
 
