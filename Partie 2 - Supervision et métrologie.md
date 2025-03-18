@@ -151,8 +151,9 @@ A contrario, ces compteurs sont recommandés lorsque le volument de trafic est �
 
 ### <u> Question 17 </u>
 Manipulation simple permmettant de trouver le débit entrant :  
-1) Lancer la commande ``` iperf3 -c 10.200.2.11 -t 30 -b 1M ``` sur A. Elle permet, via l'option "-t", de générer un flux via iperf mais plus longtemps que par défaut.  
-2) Lancer le script sur A, mesurant le débit sortant (nommé 813-Q17-debit_out.sh).  
+1) Lancer la commande ``` iperf3 -c 192.168.141.87 -t 30 -b 1M ``` sur A. Elle permet, via l'option "-t", de générer un flux via iperf mais plus longtemps que par défaut.  
+   192.168.141.87 est l'adresse IP que B a obtenu sur le VLAN140
+3) Lancer le script sur A, mesurant le débit sortant (nommé 813-Q17-debit_out.sh).  
    Le .3 à la fin de l'OID fait référence à l'interface GigabitEthernet3 du routeur (interface qui est au niveau du réseau 10.250.0.0/24)  
    ```
     TX1=$(snmpget -v2c -c 123test123 -Oqv 10.200.2.254 1.3.6.1.2.1.2.2.1.16.3) # Mesure du nombre d'octets envoyés
