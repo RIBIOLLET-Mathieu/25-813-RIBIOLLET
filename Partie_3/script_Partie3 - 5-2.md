@@ -19,3 +19,5 @@ echo "${timestamp};${value}" | tee -a "${filename}"
 # --- Affichage ---
 cat "$filename"
 ```
+=> [Retour Partie 3](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie_3/Partie%203%20-%20Script%20bash%20de%20mesure%20de%20debit.md)  
+=> [Retour Sommaire](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET)
