@@ -44,7 +44,7 @@ Une colonne "Justification" (fictive donc) permet d'expliquer le choix pertinent
 La table de routage du routeur R2 sera semblable à celle de R1.
 
 ### <u> Question 2 </u>
-Le protocole VRRP (Virtual Router Redundancy Protocol) assure la redondance de la passerelle par défaut en utilisant une adresse IP virtuelle associé à un groupe de routeurs. Avec VRRP nous avons la présence d'un routeur maître, assurant le service de routage, ect. En cas de défaillance de ce dernier, VRRP sélectionne le routeur esclave (ou secondaire) enfin d'assurer la continuité du service.
+Le protocole VRRP (Virtual Router Redundancy Protocol) assure la redondance de la passerelle par défaut pour des machines d'un réseau interne en utilisant une adresse IP virtuelle associé à un groupe de routeurs. Avec VRRP nous avons la présence d'un routeur maître, assurant le service de routage, ect. En cas de défaillance de ce dernier, VRRP sélectionne le routeur esclave (ou secondaire) enfin d'assurer la continuité du service.
 
 ### <u> Question 3 </u>
 La configuration VRRP, théoriquement mise en place sur R1 et R2, permet d'assurer la disponibilité aux réseaux externes pour les machines A et B. Les réseaux externes sont disponibles tant que R1 et R2 fonctionnent correctement.
