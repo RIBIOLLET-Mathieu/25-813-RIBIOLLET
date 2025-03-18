@@ -18,25 +18,28 @@ Le réseau déployé lors de ce mini-projet est le suivant.
 # 3.2 Etude théorique préparatoire
 ### <u> Question 1 </u>
 Dans la théorie, nous utilisons le protocole OSPF comme protocole de routage. Nous apprenons donc :
-- x9 routes vers le sous-réseau des autres binômes.
+- x9 routes vers le sous-réseau des autres binômes. (On peut compter 2 fois (donc x18) vu qu'il y a 2 next-hop pour aller aux réseau internes).
 - x2 route vers les sous-réseaux directement connectés (Le notre et le VLAN633)
+- x1 loopback du routeur
+- x20 routes vers les loopbacks des routeurs des autres binômes
 - x1 route vers le sous-réseau "Prof".
 - x2 routes vers les sous-réseau VLAN140 et VLAN176
-- x1 route par défault utilisant les routeurs RPROF1 et RPROF2 comme passerelle par défault.
+- x2 routes par défault utilisant les routeurs RPROF1 et RPROF2 comme passerelle par défault.
 
-Donc au final, 15 routes seront présentes dans notre table de routage.
+Donc au final, 47 routes seront présentes dans notre table de routage.
 
-Pour le routeur R1 nous pouvons avoir une table de routage comme présenté ci-dessous (Pour la colonne "coût" nous n'avons pas de coût de référence, nous ne renseignons donc pas de valeur) :
-Une colonne "Justification" (fictive donc) permet d'expliquer le choix pertinent de la route.
+Pour le routeur R1 nous pouvons avoir une table de routage comme présenté ci-dessous (Le coût de référence est 10 (10x le débit du plus haut lien) :  
+Une colonne "Justification" (fictive donc) permet d'expliquer le choix pertinent de la route.  
 | Réseau destination |  Next-Hop  | Coût | Justification | 
-|-------------------:|------------|-----|-----|
+|--------------------|------------|-----|-----|
 |  10.200.2.0/24 | DC int_R1_LAN |  X  | Route vers le Réseau interne |
 |  10.250.0.0/24 | DC int_R1_WAN |  X  | Route vers le VLAN 633 |
-|  10.100.9.0/24 | 10.250.0.18 |  X  | Réseau interne "Prof" |
-|  10.200.1.0/24 | 10.250.0.102|  X  | Exemple d'un réseau interne d'un autre binôme |
-|  192.168.176.0/24 | 10.250.0.254 |  X  | Route vers le VLAN 176 |
-|  192.168.140.0/23 | 10.250.0.253 |  X  | Route vers le VLAN 140 |
-|  0.0.0.0/0 | 10.250.0.254 |  X  | Route par défault |
+|  10.100.9.0/24 | 10.250.0.18 |  20  | Réseau interne "Prof" |
+|  10.200.1.0/24 | 10.250.0.102|  20  | Exemple d'un réseau interne d'un autre binôme |
+|  192.168.176.0/24 | 10.250.0.254 |  20  | Route vers le VLAN 176 |
+|  192.168.140.0/23 | 10.250.0.253 |  20  | Route vers le VLAN 140 |
+|  0.0.0.0/0 | 10.250.0.254  |    | Route par défault |
+|            | 10.250.0.253  |    | Route par défault |
 
 La table de routage du routeur R2 sera semblable à celle de R1.
 
