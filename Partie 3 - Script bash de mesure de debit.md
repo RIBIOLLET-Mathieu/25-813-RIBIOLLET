@@ -78,8 +78,7 @@ Pour tester notre script à ce jour (voir ci-dessous), nous procédons comme sui
    ```
 
 3) Lancer le script une deuxième fois  
-   Après cette deuxième exécution, le fichier de sortie affichera toujours la première ligne, inchangée. Une deuxième ligne apparaîtra, et cette fois-ci, une valeur sera  
-   attribuée à la variable "rate". Ce débit correspond à la différence entre les valeurs d'octets et le temps écoulé entre la première et la deuxième mesure.  
+   Après cette deuxième exécution, le fichier de sortie affichera toujours la première ligne, inchangée. Une deuxième ligne apparaîtra, et cette fois-ci, une valeur sera  attribuée à la variable "rate". Ce débit correspond à la différence entre les valeurs d'octets et le temps écoulé entre la première et la deuxième mesure.  
    ```
    [root@813-B10-A Partie5_Script]# ./snmp5-3.sh 
    1742226309;165798625;0
