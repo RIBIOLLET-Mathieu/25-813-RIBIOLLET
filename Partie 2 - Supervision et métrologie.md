@@ -150,7 +150,7 @@ Et en 64 bits nous utiliserons les OID suivants :
 A contrario, ces compteurs sont recommandés lorsque le volument de trafic est élevé.  
 
 ### <u> Question 17 </u>
-Manipulation simple permmettant de trouver le débit entrant :  
+Manipulation simple permmettant de trouver le débit sortant :  
 1) Lancer la commande ``` iperf3 -c 192.168.141.87 -t 30 -b 1M ``` sur A (Bien évidemment la commande iperf3 -s a été lancée sur B). Elle permet, via l'option "-t", de générer un flux via iperf mais plus longtemps que par défaut. 192.168.141.87 est l'adresse IP que B a obtenu sur le VLAN140
 3) Lancer le script sur A, mesurant le débit sortant (nommé 813-Q17-debit_out.sh).  
    Le .3 à la fin de l'OID fait référence à l'interface GigabitEthernet3 du routeur (interface qui est au niveau du réseau 10.250.0.0/24)  
