@@ -78,14 +78,20 @@ La configuration de ces machines sera faîte en 4 étapes. Etant seul pour ce mi
 
 ## 3.3.1 Etape 1 - Création VMs A et R1, configuration IP
 ### <u> Question 5 </u>
-Afin de tester la configuration effectuée à cette étape, le test ci-dessous seront réalisés :
-Sur A : 
-- Ping <@IP_R1_LAN>
-Réponse attendu :
-- Positif
-Résultat du test après configuration :
+Afin de tester la configuration effectuée à cette étape, le test ci-dessous sera réalisé :  
+Sur A :  
+- Ping <@IP_R1_WAN>
+Réponse attendu :  
+- Positif  
+Résultat du test après configuration :  
+- OK  
+Sur R1 :  
+- Ping <@IP_RPROF1 ou 2>
+Réponse attendu :  
+- Positif  
+Résultat du test après configuration :  
 - OK
-
+ 
 Ce test nous permet de vérifier 2 choses, que A a une configuration IP correcte (adresse de sous-réseau, passerelle par défaut (IP de R1) correcte) et que R1 a également une configuration IP correcte.
 
 ## 3.3.2 Etape 2 - Configuration OSPF dans R1
