@@ -55,7 +55,7 @@ Fonctionnment résumé de VRRP :
 
 Les informations VRRP circulent sur le réseau dans des messages "VRRP Advertissement Messages", envoyé par le maître.
 
-A et B ont une adresse IP virtuelle configurée comme route par défaut, connue par les routeurs R1 et R2. Les messages "VRRP Advertissement Messages", envoyé périodiquement par le maître en multicast, contiennent une valeur de priorité qui est indiqué aux machines A et B. Les machines savent donc qu'elles doivent envoyer leurs paquets vers le routeur maître.
+A et B ont une adresse IP virtuelle configurée comme route par défaut, connue par les routeurs R1 et R2. Les messages "VRRP Advertissement Messages", envoyé périodiquement par le maître en multicast contiennent une valeur de priorité qui permet d'identifier quel routeur doit être associé à l'adresse IP virtuelle à l'instant t. Pour indiquer aux machines A et B à quel routeur il faut envoyer les trames pour communiquer avec l'extérieur seul le routeur associé à l'adresse virtuelle répondra aux requêtes ARP. Les machines savent donc qu'elles doivent envoyer leurs paquets vers le routeur maître.
 
 ### <u> Question 4 </u>
 Le protocole OSPF est un protocol de routage permettant à tous les routeurs de la topologie d'avoir la même "vue" du réseau. Grâce à l'algorithme SPF (Short Path First), utilisé par OSPF, les routeurs remplissent leur table de routage. OSPF est curcial pour garantir la connectivité.
