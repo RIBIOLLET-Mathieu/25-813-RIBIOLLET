@@ -15,12 +15,12 @@ Enfin, Cron permet un gestion simple en offrant des outils tels que des logs. Ce
 
 **************************************************
 # 5.1 Récupération du compteur d'octets
-Script à la fin de cette étape : [Script Partie3 - 5.1](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/script_Partie3%20-%205-1.md)  
+Script à la fin de cette étape : [Script Partie3 - 5.1](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie_3/script_Partie3%20-%205-1.md)  
 
 **************************************************
 # 5.2 Gestion de la date et enregistrement des résultats dans un fichier
 Script à la fin de cette étape, ajout de la date et enregistrement dans un fichier.
-[Script Partie3 - 5.2](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/script_Partie3%20-%205-2.md)  
+[Script Partie3 - 5.2](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie_3/script_Partie3%20-%205-2.md)  
 
 Plusieurs tests ont été menés, voici le contenu du fichier de sorti à la fin de cette étape :
 ```bash
@@ -38,7 +38,7 @@ Pour tester notre script à ce jour (voir ci-dessous), nous procédons comme sui
 1) Lancer le script une première fois  
    Lors de cette première exécution, le fichier de sortie contiendra uniquement une seule ligne, et la valeur de la variable "rate" sera égale à 0. Cette valeur est 
    normale, car le script ne peut pas effectuer de comparaison avec un relevé précédent.
-   Sortie du test de cette étape : [Script Partie3 - 5.3](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/script_Partie3%20-%205-3.md)  
+   Sortie du test de cette étape : [Script Partie3 - 5.3](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie_3/script_Partie3%20-%205-3.md)  
 
 **************************************************
 # 5.4 Gestion du fichier vide et gestion du rebouclage du compteur d'octets
@@ -58,7 +58,7 @@ else
 fi
 ```
 
-Script à la fin de cette étape : [Script Partie3 - 5.4](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/script_Partie3%20-%205-4.md)  
+Script à la fin de cette étape : [Script Partie3 - 5.4](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie_3/script_Partie3%20-%205-4.md)  
 
 **************************************************
 # 5.5 Utilisation du cron pour que le script s'exécute toutes les minutes
@@ -80,11 +80,11 @@ A savoir que crontab est "lié" à l'utilisateur sur lequel on le configure. Si 
 Dans le crontab de l'utilisateur "etudiant", notre configuration ne sera pas présente.
 Crontab s'éxécute dans son répertoire courant. Afin qu'il puisse trouver et éxécuter correctement le script on spécifié un variable "workdir" au début du script.
 
-Script à la fin de cette étape : [Script Partie3 - 5.5](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/script_Partie3%20-%205-5.md)
+Script à la fin de cette étape : [Script Partie3 - 5.5](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie_3/script_Partie3%20-%205-5.md)
 
 **************************************************
 # 5.6 Script générique
 ### <u> Question 22 </u>
 Afin de rendre le script plus générique nous avons récupéré les valeurs des arguments dans nos variables. Bien évidemment une vérification de la présence des arguments est faîte en début de script. Hormis cela, rien n'a été modifié.  
 -> Afin de se rendre compte du débit moyen, un petit script calculant ce dernier et renseignant la valeur calculée dans un fichier "debit_moyen.txt" a été écrit.
-Script final : [Script Partie3 - 5.6_FINALE](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/script_Partie3%20-%205-6-FINAL.md)
+Script final : [Script Partie3 - 5.6_FINALE](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie_3/script_Partie3%20-%205-6-FINAL.md)
