@@ -87,4 +87,4 @@ Script à la fin de cette étape : [Script Partie3 - 5.5](https://github.com/RIB
 ### <u> Question 22 </u>
 Afin de rendre le script plus générique nous avons récupéré les valeurs des arguments dans nos variables. Bien évidemment une vérification de la présence des arguments est faîte en début de script. Hormis cela, rien n'a été modifié.  
 -> Afin de se rendre compte du débit moyen, un petit script calculant ce dernier et renseignant la valeur calculée dans un fichier "debit_moyen.txt" a été écrit.
-Script final : [Script Partie3 - 5.6](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/script_Partie3%20-%205-6-FINAL.md)
+Script final : [Script Partie3 - 5.6_FINALE](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/script_Partie3%20-%205-6-FINAL.md)
