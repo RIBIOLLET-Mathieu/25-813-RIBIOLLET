@@ -16,7 +16,7 @@ Enfin, Cron permet un gestion simple en offrant des outils tels que des logs. Ce
 **************************************************
 # 5.1 Récupération du compteur d'octets
 Script à la fin de cette étape :
-```
+```bash
 #!/bin/bash
 
 # --- Définition des valeurs en dures ---
@@ -34,7 +34,7 @@ echo "${value}"
 
 # 5.2 Gestion de la date et enregistrement des résultats dans un fichier
 Script à la fin de cette étape, ajout de la date et enregistrement dans un fichier.
-```
+```bash
 #!/bin/bash
 
 # --- Définition des valeurs en dur ---
@@ -56,7 +56,7 @@ echo "${timestamp};${value}" | tee -a "${filename}"
 cat "$filename"
 ```
 Plusieurs tests ont été menés, voici le contenu du fichier de sorti à la fin de cette étape :
-```
+```bash
 [root@813-B10-A Partie5_Script]# ./snmp5-2.sh 
 1742225060;165753177
 1742224732;165746421
@@ -72,21 +72,21 @@ Pour tester notre script à ce jour (voir ci-dessous), nous procédons comme sui
    Lors de cette première exécution, le fichier de sortie contiendra uniquement une seule ligne, et la valeur de la variable "rate" sera égale à 0. Cette valeur est 
    normale, car le script ne peut pas effectuer de comparaison avec un relevé précédent.
    Sortie du test de cette étape :
-   ```
+   ```bash
    [root@813-B10-A Partie5_Script]# ./snmp5-3.sh 
    1742226309;165798625;0
    ```
 
 2) Lancer le script une deuxième fois  
    Après cette deuxième exécution, le fichier de sortie affichera toujours la première ligne, inchangée. Une deuxième ligne apparaîtra, et cette fois-ci, une valeur sera  attribuée à la variable "rate". Ce débit correspond à la différence entre les valeurs d'octets et le temps écoulé entre la première et la deuxième mesure.  
-   ```
+   ```bash
    [root@813-B10-A Partie5_Script]# ./snmp5-3.sh 
    1742226309;165798625;0
    1742226363;165801577;437
    ```
 
 Script à la fin de cette étape :
-```
+```bash
 #!/bin/bash
 
 # --- Définition des valeurs en dur ---
@@ -145,7 +145,7 @@ Un rebouclage du compteur donnerait un calcul de débit avec un résultat négat
 Si la nouvelle valeur de compteur relevée est inférieur à l'ancienne valeur, cela signifie qu'un rebouclage a eu lieu. Dans ce cas, la nouvelle valeur du compteur doit être ajustée en ajoutant la capacité maximale du compteur à la différence calculée. Ainsi le calcul ne sera pas faussé.
 
 Dans le script on modifie le calcul de la différence d'octets.
-```
+```bash
 # Calcul de la différence d'octets en tenant compte du rebouclage
 if [ "$value" -lt "$last_value" ]; then
     # Rebouclage détecté, ajustement en ajoutant la valeur maximale du compteur (32 bits)
@@ -219,6 +219,7 @@ Afin que le script s'éxécute toutes les minutes, nous allons mettre en place c
 Afin que le script s'éxécute toutes les minutes il nous faut étudier le gestionnaire de crontab via la commande ```crontab -e```.  
 On y ajoute la ligne suivante : ```* * * * * /home/etudiant/Partie5_Script/snmp5-5.sh```  
 Explication :  
+```bash
 * * * * * /home/etudiant/Partie5_Script/snmp5-5.sh
 │ │ │ │ │
 │ │ │ │ └── Jour de la semaine (0 - 7)  →  * = Tous les jours
@@ -226,7 +227,7 @@ Explication :
 │ │ └────── Jour du mois (1 - 31)       →  * = Tous les jours
 │ └──────── Heure (0 - 23)              →  * = Toutes les heures
 └────────── Minute (0 - 59)             →  * = Toutes les minutes
-
+```
 
 Script à la fin de cette étape :
 ```
