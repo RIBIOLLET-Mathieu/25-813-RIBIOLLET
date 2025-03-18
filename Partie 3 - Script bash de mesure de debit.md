@@ -293,7 +293,6 @@ cat "$filename"
 
 # 5.6 Script générique
 ### <u> Question 22 </u>
-
-Script final :
-```
-```
+Afin de rendre le script plus générique nous avons récupéré les valeurs des arguments dans nos variables. Bien évidemment une vérification de la présence des arguments est faîte en début de script. Hormis cela, rien n'a été modifié.  
+Script final : 
+-> Afin de se rendre compte du débit moyen, un petit script calculant ce dernier et renseignant la valeur calculée dans un fichier "debit_moyen.txt" a été écrit.
