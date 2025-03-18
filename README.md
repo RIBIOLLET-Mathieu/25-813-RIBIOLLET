@@ -25,3 +25,8 @@ Table des matières :
 
 - [Partie 2 - Supervision et métrologie avec SNMP](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie%202%20-%20Supervision%20et%20m%C3%A9trologie.md)
 - [Partie 3 - Script bash de mesure de débit en SNMP](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie%203%20-%20Script%20bash%20de%20mesure%20de%20debit.md)
+  - [Partie 3 - Script 5.1](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/script_Partie3%20-%205-1.md)
+  - [Partie 3 - Script 5.2](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/script_Partie3%20-%205-2.md)
+  - [Partie 3 - Script 5.3](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/script_Partie3%20-%205-3.md)
+  - [Partie 3 - Script 5.4](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/script_Partie3%20-%205-4.md)
+  - [Partie 3 - Script 5.5](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/script_Partie3%20-%205-5.md)
