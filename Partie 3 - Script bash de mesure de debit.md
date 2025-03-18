@@ -156,7 +156,7 @@ fi
 ```
 
 Script à la fin de cette étape :
-```
+```bash
 #!/bin/bash
 
 # --- Définition des valeurs en dur ---
@@ -215,6 +215,18 @@ cat "$filename"
 
 # 5.5 Utilisation du cron pour que le script s'exécute toutes les minutes
 ### <u> Question 21 </u>
+Afin que le script s'éxécute toutes les minutes, nous allons mettre en place cron, un ordonnanceur très simple intégré à linux.  
+Afin que le script s'éxécute toutes les minutes il nous faut étudier le gestionnaire de crontab via la commande ```crontab -e```.  
+On y ajoute la ligne suivante : ```* * * * * /home/etudiant/Partie5_Script/snmp5-5.sh```  
+Explication :  
+* * * * * /home/etudiant/Partie5_Script/snmp5-5.sh
+│ │ │ │ │
+│ │ │ │ └── Jour de la semaine (0 - 7)  →  * = Tous les jours
+│ │ │ └──── Mois (1 - 12)               →  * = Tous les mois
+│ │ └────── Jour du mois (1 - 31)       →  * = Tous les jours
+│ └──────── Heure (0 - 23)              →  * = Toutes les heures
+└────────── Minute (0 - 59)             →  * = Toutes les minutes
+
 
 Script à la fin de cette étape :
 ```
