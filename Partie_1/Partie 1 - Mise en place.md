@@ -1,4 +1,4 @@
-# 3. Partie 1 - Mise en place d'une maquette de réseau local avec haute disponibilité
+ # 3. Partie 1 - Mise en place d'une maquette de réseau local avec haute disponibilité
 Objectifs
 - Réaliser une étude préparatoire sur la maquette
 - Mettre en place les différentes machines (PC / Routeur)
@@ -144,13 +144,18 @@ Résultat du test après configuration :
 - OK
 => R2 a donc bien pris le rôle de Master
 
-3) R1 et R2 sont DOWN
-Sur A :
-- Ping 8.8.8.8
-Réponse attendu :
-- Négatif
-Résultat du test après configuration :
-- OK (ping négatif)
+On réactive R1, il redevient maître (sh ip vrrp)
+3) L'interface externe de R1 devient DOWN
+- L'état VRRP de R1 est toujours Master  
+- L'état VRRP de R2 est toujours Backup  
+Sur A :  
+- ping 8.8.8.8  
+Réponse attendue :  
+- Positif (R1 va envoyer ses paquets à R2)
+Résultat du test après configuration :  
+- OK
+
+4) On éteint totalement le routeur maître et on effectue les mêmes tests qu'auparavant
 
 Les tests ont été réalisés en utilisant la commande "tracepath 8.8.8.8". Leur résultat confirme la théorie. Notre configuration VRRP est donc correcte.
 
