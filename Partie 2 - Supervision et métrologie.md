@@ -8,7 +8,7 @@ Objectifs
 # 4.1 Configuration de SNMPv3 dans les routeurs
 Après avoir configuré SNMPv3 sur les routeurs, nous avons installé les outils snmp sur les machines A et B afin de réaliser des tests.  
 Nous avons par la suite testé de récupérer l'hostname du routeur 813-B10-R1 via la commande ci-dessous. Nous avons fait la même chose pour tester la configuration de 813-B10-R2
-```
+```bash
 [etudiant@813-B10-B ~]$ snmpget -v3 -u snmpuser -l authPriv -a SHA -A auth_pass -x AES -X crypt_pass 10.200.2.254 sysName.0
 ```
 Le résultat est correct : ``` SNMPv2-MIB::sysName.0 = STRING: 813-B10-R1 ```
@@ -16,11 +16,11 @@ Le résultat est correct : ``` SNMPv2-MIB::sysName.0 = STRING: 813-B10-R1 ```
 
 ### <u> Question 8 </u>
 Afin de récupérer l'objet "syslocation" nous utilisons la commande snmpget suivante :  
-```
+```bash
 snmpget -v3 -u snmpuser -l authPriv -a SHA -A auth_pass -x AES -X crypt_pass <IP_ROUTEUR> sysLocation.0
 ```
 Par exemple, pour le routeur 813-B10-R2, nous avons le résultat suivant :  
-```
+```bash
 SNMPv2-MIB::sysLocation.0 = STRING: "ETRS813 - Binôme10 Routeur 2 - Université Savoie Mont Blanc"
 ```
 C'est bel et bien la valeur que nous avons configuré précèdemment. La configuration sur R2 est donc correcte et la commande également.
@@ -29,7 +29,7 @@ C'est bel et bien la valeur que nous avons configuré précèdemment. La configu
 # 4.2 Configuration de SNMPv2 dans les routeurs
 Sur A, testons le fonctionnement de notre configuration SNMPv2 en tentant de récupérer l'hostname du routeur R2, qui correspond à l'OID 1.3.6.1.2.1.1.5.0 (Recherché sur Internet).  
 Pour cela on va utiliser la commande ci-dessous  
-```
+```bash
 snmpget -v2c -c 123test123 10.200.2.253 1.3.6.1.2.1.1.5.0
 ```
 Le résultat est correct : ``` SNMPv2-MIB::sysName.0 = STRING: 813-B10-R2 ```  
@@ -48,7 +48,7 @@ Pour réaliser la capture nous avons :
 
 Nous capturons ainsi la requête SNMP-GET envoyé par A au routeur 813-B10-R1 et la réponse du routeur.  
 Trame requête :  
-```
+```bash
 0000  08 00 27 f4 4c 96 08 00 27 30 bb 08 08 00 45 00   ..'.L...'0....E.
 0010  00 4d 4b 45 40 00 40 11 d4 c3 0a c8 02 0a 0a c8   .MKE@.@.........
 0020  02 fe bc 13 00 a1 00 39 1a e2 30 2f 02 01 01 04   .......9..0/....
@@ -58,7 +58,7 @@ Trame requête :
 ```
 
 Trame réponse :  
-```
+```bash
 0000  08 00 27 30 bb 08 08 00 27 f4 4c 96 08 00 45 00   ..'0....'.L...E.
 0010  00 4f 00 06 00 00 ff 11 a1 00 0a c8 02 fe 0a c8   .O..............
 0020  02 0a 00 a1 bc 13 00 3b 42 74 30 31 02 01 01 04   .......;Bt01....
@@ -77,7 +77,9 @@ On observe donc bien la valeur d'OID demander via la commande ci-dessus. La vers
 
 ### <u> Question 11 </u>
 Dans cette question nous nous intéressons à la MIB VRRP ainsi que le fichier contenant la description de cette dernière. Après avoir effectué des recherches sur Internet nous avons relevé la ligne indiquant l'OID relatif de la branche VRRP.
-```vrrp OBJECT IDENTIFIER ::= { mib-2 68 }```
+```bash
+vrrp OBJECT IDENTIFIER ::= { mib-2 68 }
+```
 
 En en conclut l'OID complet : 1.3.6.1.2.1.68
 
@@ -110,7 +112,7 @@ Désactiver le processus faisant pare-feu sur B fût nécessaire afin de réalis
 Le protocole de transport utilisé pour le test de débit entre les deux machines A et B est ``` TCP ``` (utilisé par défaut). Le protocole UDP peut-être utilisé avec l'option -u. (iperf3 -c <@IP_B> -u)  
 Iperf3 réalise 10 mesures, une toutes les secondes, soit 10s pour la durée de la mesure.  
 On observe un débit moyen de 2,62 Gbits/s entre nos 2 machines.  
-```
+```bash
 [root@813-B10-A etudiant]# iperf3 -c 10.200.2.11
 Connecting to host 10.200.2.11, port 5201
 [  5] local 10.200.2.10 port 41148 connected to 10.200.2.11 port 5201
@@ -154,7 +156,7 @@ Manipulation simple permmettant de trouver le débit sortant :
 1) Lancer la commande ``` iperf3 -c 192.168.141.87 -t 30 -b 1M ``` sur A (Bien évidemment la commande iperf3 -s a été lancée sur B). Elle permet, via l'option "-t", de générer un flux via iperf mais plus longtemps que par défaut. 192.168.141.87 est l'adresse IP que B a obtenu sur le VLAN140
 3) Lancer le script sur A, mesurant le débit sortant (nommé 813-Q17-debit_out.sh).  
    Le .3 à la fin de l'OID fait référence à l'interface GigabitEthernet3 du routeur (interface qui est au niveau du réseau 10.250.0.0/24)  
-   ```
+   ```bash
     TX1=$(snmpget -v2c -c 123test123 -Oqv 10.200.2.254 1.3.6.1.2.1.2.2.1.16.3) # Mesure du nombre d'octets envoyés
     sleep 10
     TX2=$(snmpget -v2c -c 123test123 -Oqv 10.200.2.254 1.3.6.1.2.1.2.2.1.16.3) # Mesure du nombre d'octets envoyés après 10 secondes
