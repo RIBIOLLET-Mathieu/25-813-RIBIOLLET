@@ -159,5 +159,5 @@ Résultat du test après configuration :
 
 Les tests ont été réalisés en utilisant la commande "tracepath 8.8.8.8". Leur résultat confirme la théorie. Notre configuration VRRP est donc correcte.
 
-=> [Configuration du routeur 813-B10-R1](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie_1/Partie%201%20-%20Configuration%20de%20813-B10-R1)
+=> [Configuration du routeur 813-B10-R1](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie_1/Partie%201%20-%20Configuration%20de%20813-B10-R1)  
 => [Configuration du routeur 813-B10-R2](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie_1/Partie%201%20-%20Configuration%20de%20813-B10-R2)
