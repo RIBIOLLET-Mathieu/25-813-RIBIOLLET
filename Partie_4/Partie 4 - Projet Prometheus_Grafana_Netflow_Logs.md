@@ -85,3 +85,6 @@ Grafana se connecte à Prometheus pour afficher les métriques sous forme de gra
 ## Conclusion
 Prometheus est une solution robuste pour la supervision d’infrastructures modernes. Son intégration avec Grafana et Alertmanager permet une surveillance efficace et proactive des systèmes et applications.
 
+# Mise en place
+
+Nous avons d'abord installer Docker, Docker Compose. Nous avons également installer Portainer, un manager de conteneur permettant de gérer facilement le déploiement et l'administration de nos machines.
