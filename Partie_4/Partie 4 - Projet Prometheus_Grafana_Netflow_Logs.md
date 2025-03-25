@@ -13,6 +13,24 @@ Prometheus est un outil de supervision open-source conçu pour collecter, stocke
 ## Fonctionnement de Prometheus
 Prometheus fonctionne selon un modèle **pull**, où il récupère régulièrement des métriques depuis des **exporters** ou directement depuis des applications qui exposent des données via HTTP.
 
+# Supervision avec Prometheus et Grafana
+
+## Introduction
+Prometheus est un outil de supervision open-source conçu pour collecter, stocker et analyser des métriques sous forme de séries temporelles. Il est souvent utilisé avec Grafana pour la visualisation des données.
+
+## Avantages de Prometheus
+Prometheus se distingue des autres solutions de supervision par plusieurs aspects :
+
+| Critère               | Prometheus                                      | Autres solutions (ex: Nagios, Zabbix) |
+|-----------------------|-----------------------------------------------|--------------------------------------|
+| **Modèle de collecte** | Basé sur un modèle **pull**                    | Modèle souvent **push**             |
+| **Stockage**          | Base de données optimisée pour les séries temporelles | Base relationnelle ou fichiers    |
+| **Scalabilité**       | Conçu pour gérer des infrastructures dynamiques (Cloud, Kubernetes) | Moins adapté aux environnements dynamiques |
+| **Configuration**     | Déclaration en YAML, flexible et simple        | Configuration plus complexe        |
+| **Visualisation**     | Intégration native avec **Grafana**             | Interfaces propriétaires ou limitées |
+| **Gestion des alertes** | Intégration avec **Alertmanager**               | Systèmes d’alertes souvent intégrés mais moins flexibles |
+| **Communauté**       | Large communauté et support actif              | Moins actif selon la solution     |
+
 ### Composants principaux
 - **Prometheus Server** : Collecte et stocke les métriques dans une base de données optimisée pour les séries temporelles.
 - **Exporters** : Applications qui exposent des métriques pour être collectées par Prometheus.
