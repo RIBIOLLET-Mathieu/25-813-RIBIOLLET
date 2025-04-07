@@ -87,4 +87,52 @@ Prometheus est une solution robuste pour la supervision d’infrastructures mode
 
 # Mise en place
 
-Nous avons d'abord installer Docker, Docker Compose. Nous avons également installer Portainer, un manager de conteneur permettant de gérer facilement le déploiement et l'administration de nos machines.
+Nous avons déjà mis en place Prometheus et Grafana via une solution dockerisé avec docker-compose. Voir les détails de ce déploiement dans [Déploiement Prometheus/Grafana](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie_4/D%C3%A9ploiement%20de%20la%20solution.md)  
+Nous avons ensuite lié Grafana à Prometheus en indiquant Prometheus comme source de données sur Grafana.  
+
+## SNMP Exporter
+Prometheus ne sait pas communiquer en SNMP nativement, nous devons installer un service nommé "snmp-exporter" pour cela. "snmp-exporter" est un service qui transforme SNMP en HTTP pour que Prometheus puisse le parcourir.  
+On ajout donc cela au fichier "docker-compose.yml" :  
+```yml
+snmp-exporter:
+    image: prom/snmp-exporter
+    container_name: snmp-exporter
+    ports:
+      - "9116:9116"
+    volumes:
+      - ./snmp/snmp.yml:/etc/snmp_exporter/snmp.yml
+```
+Avant de monter ce service, nous devons créer le fichier snmp.yml dans le dossier snmp que nous créerons également. Ce fichier permet de définir les informations que nous allons récupérer sur les machines. 
+Le contenu du fihcier "snmp.yml" est :  
+```yml
+default:
+  version: 2
+  auth:
+    community: 123test123
+  walk:
+    - 1.3.6.1.2.1.2.2.1.10  # ifInOctets de toutes les interfaces
+    - 1.3.6.1.2.1.2.2.1.16  # ifOutOctets de toutes les interfaces
+  metrics:
+    - name: ifInOctets
+      oid: 1.3.6.1.2.1.2.2.1.10
+      type: counter
+    - name: ifOutOctets
+      oid: 1.3.6.1.2.1.2.2.1.16
+      type: counter
+```
+Enfin, nous ajoutons le job SNMP dans le fichier prometheus.yml. Pour cela, on ajoute le bloc yml suivant dans scrape_configs :  
+```yml
+  - job_name: 'snmp'
+    metrics_path: /snmp
+    params:
+      module: [default]
+    static_configs:
+      - targets: ['10.200.2.254','10.200.2.253']  # IP des routeurs
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp-exporter:9116
+```
