@@ -17,7 +17,7 @@ sudo chown -R 65534:65534 ./data
 
 # 2) Installation de Prometheus
 ## 2.1) Préparation
-Dans un dossier "prometheus", nous avons créer le fichier "docker-compose.yml", dont le contenu est :
+Dans un dossier "prometheus", nous avons créer le fichier "docker-compose.yml", dont le contenu est :  
 ```yml
 version: '3.8'
 services:
@@ -31,9 +31,9 @@ services:
     ports:
       - "80:9090"
 ```
-Note : Le "80:9090" dans la catégorie "ports" nous permet d'accèder depuis le VPN de l'université (car le port 9090 n'est pas directement ouvert).
+Note : Le "80:9090" dans la catégorie "ports" nous permet d'accèder depuis le VPN de l'université (car le port 9090 n'est pas directement ouvert).  
 
-Dans un dossier /prometheus/config on crée le fichier "prometheus.yml", dont le contenu est :
+Dans un dossier /prometheus/config on crée le fichier "prometheus.yml", dont le contenu est :  
 ```yml
 global:
   scrape_interval: 15s  # Fréquence de collecte des métriques
@@ -52,7 +52,7 @@ On peut maintenant entrée la commande suivante afin de lancer le conteneur Prom
 docker-compose-linux-x86_64 up -d
 ```
 On vérifie via la commande ```docker ps```
-Prometheus est maintenant accessible sur l'@IP 192.168.141.230:80
+Prometheus est maintenant accessible sur l'@IP 192.168.141.230:80  
 
 # 3) Installation de Grafana
 ## 3.1) Préparation
@@ -87,14 +87,14 @@ volumes:
   prometheus_data:
   grafana_data:
 ```
-Note : Le "443:9090" dans la catégorie "ports" nous permet d'accèder depuis le VPN de l'université (car le port 3000 n'est pas directement ouvert).
-Note 2 : La dernière catégorie (volumes) permet, en cas de rédémarrage, de ne pas perdre les données de Grafana et de Prometheus. Les service seront persistant.  
+Note : Le "443:9090" dans la catégorie "ports" nous permet d'accèder depuis le VPN de l'université (car le port 3000 n'est pas directement ouvert).  
+Note 2 : La dernière catégorie (volumes) permet, en cas de rédémarrage, de ne pas perdre les données de Grafana et de Prometheus. Les service seront persistant.   
 
 ## 3.2) Lancement
 Afin de lancer Grafana, on effectue les mêmes actions que pour Prometheus, c'est à dire :  
 ```bash
 docker-compose-linux-x86_64 up -d
 ```
-On vérifie via la commande ```docker ps```
-Prometheus est maintenant accessible sur l'@IP 192.168.141.230:443
-Le mot de passe de l'utilisateur "admin" a été changé par mon login ("ribiollm")
+On vérifie via la commande ```docker ps```  
+Prometheus est maintenant accessible sur l'@IP 192.168.141.230:443  
+Le mot de passe de l'utilisateur "admin" a été changé par mon login ("ribiollm")  
