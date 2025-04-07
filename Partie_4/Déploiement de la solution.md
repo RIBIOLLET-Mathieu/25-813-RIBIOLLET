@@ -3,75 +3,55 @@
 echo "nameserver 193.48.120.32" | sudo tee /etc/resolv.conf > /dev/null
 ```
 
-# 1) Installation de Docker
-
+# 1) Récupération de l'image
+En faisant la recherche internet "github docker-compose" je me suis rendu sur le github où sont placées les releases de docker-compose.  
+On a copié le l'adresse du lien de la version nous intéressant (docker-compose-linux-x86_64). Ce lien copié j'ai utilisé la commande "wget" pour récupérer l'éxécutable.  
+Le fichier récupéré, nous l'avons placer dans le dossier "bin" afin de pouvoir l'éxécuter.  
 ```bash
-sudo dnf install -y docker
-sudo systemctl enable --now docker
-docker --version
+wget https://github.com/docker/compose/releases/download/v2.34.0/docker-compose-linux-x86_64
 ```
 
-# 2) Installation de Docker Compose
-```bash
-sudo dnf install -y docker-compose
-docker-compose --version
-```
-
-# 3) Installation, configuration et accès à Portainer
-
-## 3.1) Placement de la machine B dans le vlan140
-Ajout de l'interface NIC4. Obtention de l'IP 192.168.141.230
-Ouverture des ports 9443 et 9000 sur la machine B pour être sûre.
-
-## 3.2) Création du volume et lancement de Portainer.
-```bash
-podman volume create portainer_data
-podman run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:lts
-```
-
-Accès à Portainer --> ```https://192.168.141.230:9443``` (mdp : etrs813admin)
-
-# 4) Préparation de la mise en place de Prometheus et Grafana
-Tout sera placé dans un dossier monitoring
-```bash
-mkdir ~/monitoring
-cd ~/monitoring
-```
-Rédaction d'un docker-compose.yml :
+# 2) Installation de Prometheus
+## 2.1) Préparation
+Dans un dossier "prometheus", nous avons créer le fichier "docker-compose.yml", dont le contenu est :
 ```yml
-version: '3.7'
-
+version: '3.8'
 services:
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
+    restart: unless-stopped
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./data:/prometheus
     ports:
-      - "9443:9443"
-    command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
-
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    depends_on:
-      - prometheus
+      - "80:9090"
 ```
+Note : Le "80:9090" dans la catégorie "ports" nous permet d'accèder depuis le VPN de l'université (car le port 9090 n'est pas directement ouvert).
 
-Et d'un prometheus.yml :
+Dans un dossier /prometheus/config on crée le fichier "prometheus.yml", dont le contenu est :
 ```yml
 global:
-  scrape_interval: 15s  # Intervalle de récupération des métriques
+  scrape_interval: 15s  # Fréquence de collecte des métriques
 
 scrape_configs:
-  - job_name: 'prometheus'
+  - job_name: "prometheus"
     static_configs:
-      - targets: ['localhost:9443']
+      - targets: ["localhost:9090"]
+  - job_name: "node-exporter"
+    static_configs:
+      - targets: ["node-exporter:9100"]
 ```
+## 2.2) Création et lancement du contenur
+On peut maintenant entrée la commande suivante afin de lancer le conteneur Prometheus.  
+```bash
+docker-compose-linux-x86_64 up -d
+```
+On vérifie via la commande ```bash docker ps```
+Prometheus est maintenant accessible sur l'@IP 192.168.141.230:80
+
+# 3) Installation de Grafana
+## 3.1) Préparation
+## 3.2) Lancement
+
 
