@@ -237,7 +237,7 @@ echo "Simulation terminée."
 ```
 Les informations de débits des interfaces s'affichent alors sur nos Dashboard Grafana, validant ainsi le fonctionnement de notre solution jusqu'à présent. Par exemple, voici le débit entrant et sortant observé sur l'interface GigabitEthernet2 du routeur R1. Ces débits font suite à l'éxécution du script ci-dessus.  
 Par exemple, on voit bien que le premier pic correspond à un débit de 5Mbits/s, ce qui est spécifié dans le script.  
-![VIII-Débits des interfaces de R1]([https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Tests%20de%CC%81bits.png](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Test%20de%CC%81bits%20validation%20VIII.png))
+![VIII-Débits des interfaces de R1](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Test%20de%CC%81bits%20validation%20VIII.png)
 
 ## Dashboard - Interfaces ayant le plus de débit sur la dernière heure.
 
