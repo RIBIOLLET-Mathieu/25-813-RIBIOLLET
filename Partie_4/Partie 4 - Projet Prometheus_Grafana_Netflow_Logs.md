@@ -85,7 +85,7 @@ En résumé, Prometheus, combiné avec Grafana et Alertmanager, constitue une so
 Nous avons déjà déployé Prometheus et Grafana à l’aide d’une solution Docker, en utilisant docker-compose. Tous les détails concernant ce déploiement sont disponibles ici : [Déploiement Prometheus/Grafana](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie_4/D%C3%A9ploiement%20de%20la%20solution.md).  
 Une fois les services en place, nous avons configuré Grafana pour qu’il utilise Prometheus comme source de données. Cela permet à Grafana de récupérer et d’afficher les métriques collectées par Prometheus à travers des tableaux de bord personnalisés.  
 
-## SNMP Exporter
+## SNMP Exporter - Débits des interfaces des routeurs
 Prometheus ne prend pas en charge le protocole SNMP nativement. Pour contourner cela, on utilise un composant externe appelé ```snmp-exporter```. Ce service fait office de passerelle entre SNMP et Prometheus : il interroge les équipements via SNMP, puis expose les données au format HTTP, que Prometheus peut ensuite scraper.  
 
 ```yml
@@ -154,6 +154,55 @@ scrape_configs:
         replacement: snmp-exporter:9116
 ```
 
-Une fois tous les fichiers mis à jour, nous redémarrons les services avec "docker-compose". On relance également Grafana pour qu’il prenne en compte les nouvelles données. Pour visualiser les métriques collectées, nous avons importé un dashboard simple, trouvé en ligne, dédié à la supervision SNMP.
+Une fois tous les fichiers mis à jour, nous redémarrons les services avec "docker-compose". On relance également Grafana pour qu’il prenne en compte les nouvelles données. Pour visualiser les métriques collectées, nous avons importé un dashboard simple, trouvé en ligne, dédié à la supervision SNMP.  
 
-Ce tableau de bord nous permet de surveiller différentes informations utiles sur nos routeurs, comme par exemple le sysUptime, qui indique depuis combien de temps l’équipement est en fonctionnement. D'autres métriques réseau comme le trafic entrant/sortant ou les erreurs d’interface sont également visibles.
+### Procédure de tests 
+Afin de tester si notre service snmp-exporter collecte correctement les informations et que notre solution Prometheus+Grafana fonctionne nous allons générer du traffic depuis le réseau interne vers l'extérieur. Les graphiques de débits ("Dashboard") verront alors des données apparaître.  
+Pour simuler l'utilisation du réseau par une production cliente nous avons rédigé le script ci-dessous. Il généré 10 iperf avec différents débits aléatoires (de 1M à 5M).  
+```bash
+#!/bin/bash
+
+# --- TESTS PARTIE PROJET ---
+
+# Adresse IP du serveur iperf3
+SERVER="192.168.141.230"
+
+# Nombre de tests
+COUNT=10
+
+# Durée de chaque test (en secondes)
+DURATION=30
+
+echo "Simulation d'un trafic client avec débit variable..."
+
+for i in $(seq 1 $COUNT); do
+    # Génère un débit aléatoire entre 5 et 100 Mbps
+    BANDWIDTH=$(( RANDOM % 5 + 1 ))M # 5M à 100M
+
+    echo "Test $i/$COUNT avec un débit simulé de $BANDWIDTH"
+    iperf3 -c "$SERVER" -b "$BANDWIDTH" -t "$DURATION"
+    echo "-------------------------------"
+    sleep 2
+done
+
+echo "Simulation terminée."
+```
+Les informations de débits des interfaces s'affichent alors sur nos Dashboard Grafana, validant ainsi le fonctionnement de notre solution jusqu'à présent. Par exemple, voici le débit entrant et sortant observé sur l'interface GigabitEthernet2 du routeur R1. Ces débits font suite à l'éxécution du script ci-dessus.  
+![VIII-Débits des interfaces de R1](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Tests%20de%CC%81bits.png)  
+
+## Dashboard - Interfaces ayant le plus de débit sur la dernière heure.
+
+
+
+
+
+
+
+
+
+
+
+## Dashboard - sysUptime des routeurs
+
+Le fichier "snmp.yml", déployé plus tôt prenait déjà en compte la collecte des informations "uptime" dans routeurs, ainsi il nous a simplement fallu importer un dashboard permettant d'afficher l'uptime des équipements. Ce dashboard a été trouvé sur un GitHub (après une recherche "Dashboard uptime Github sur internet).  
+Ce tableau de bord nous permet de surveiller le système "uptime" des nos routeurs, qui indique depuis combien de temps l’équipement est en fonctionnement.  
