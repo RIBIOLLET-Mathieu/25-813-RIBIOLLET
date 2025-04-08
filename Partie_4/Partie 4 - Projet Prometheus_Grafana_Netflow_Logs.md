@@ -80,10 +80,9 @@ La configuration de Prometheus est flexible et permet de définir plusieurs jobs
 ## Conclusion
 En résumé, Prometheus, combiné avec Grafana et Alertmanager, constitue une solution complète et puissante pour la surveillance proactive et réactive des infrastructures et des applications. Sa flexibilité, sa scalabilité et son écosystème en constante évolution en font l'un des outils les plus populaires dans la supervision des systèmes modernes.
 
-# Mise en place
+# VIII - Mise en place
 
 Nous avons déjà déployé Prometheus et Grafana à l’aide d’une solution Docker, en utilisant docker-compose. Tous les détails concernant ce déploiement sont disponibles ici : [Déploiement Prometheus/Grafana](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie_4/D%C3%A9ploiement%20de%20la%20solution.md).  
-
 
 
 ## SNMP Exporter - Débits des interfaces des routeurs
@@ -169,28 +168,26 @@ La première étape consiste à **ajouter Prometheus comme source de données** 
 Une fois la source de données configurée, nous allons créer un tableau de bord (dashboard) pour visualiser les données collectées. Nous avons explorés les options des Dashboard Grafana et avons mise en place un affichage nous satisfaisant.
 
 ### 2.1 Créer un nouveau tableau de bord
-- Cliquez sur `+ > Dashboard` dans le menu latéral.
-- Cliquez sur `Add new panel` pour ajouter un nouveau panel. Chaque panel représente une source d'information qui apparaîtra sous forme d'élément dans la grille du tableau de bord.
+- Clique sur `+ > Dashboard` dans le menu latéral.
+- Clique sur `Add new panel` pour ajouter un nouveau panel. Chaque panel représente une source d'information.  
 
 ### 2.2 Configurer un panel pour afficher le débit entrant
 
 - Dans la section `Query`, sélectionnez `Prometheus` comme source de données.
-- Entrez la requête suivante pour récupérer les octets entrants : ifHCInOctets{ifDescr="GigabitEthernet1", instance="10.200.2.254"}
+- On a entré la requête suivante pour récupérer les octets entrants : ifHCInOctets{ifDescr="GigabitEthernet2", instance="10.200.2.254"}
 
-Cette requête permet de récupérer le volume de données entrant sur l'interface réseau `GigabitEthernet1` de l'instance `10.200.2.254`. Elle filtre les données de Prometheus pour afficher le trafic entrant sur cette interface, offrant ainsi une vue détaillée de la performance du réseau pour cet équipement.
-- Configurez l'axe Y avec l'unité `bytes/sec` pour une lecture plus pertinente des données.
+Cette requête permet de récupérer le volume de données entrant sur l'interface réseau `GigabitEthernet2` de l'instance `10.200.2.254`. Elle filtre les données de Prometheus pour afficher le trafic entrant sur cette interface, offrant ainsi une vue détaillée de la performance du réseau pour cet équipement.
 
 ### 2.3 Ajouter un panel pour le débit sortant
-- Répétez les mêmes étapes pour ajouter un nouveau panel pour le débit sortant.
-- Utilisez la requête suivante pour récupérer les octets sortants : ifHCOutOctets{ifDescr="GigabitEthernet2", instance="10.200.2.253"}
+- On répète les mêmes étapes pour ajouter un nouveau panel pour le débit sortant.
+- On utilise la requête suivante pour récupérer les octets sortants : ifHCOutOctets{ifDescr="GigabitEthernet2", instance="10.200.2.253"}
 
 ### 2.4 Personnalisation des panels
-- Nommez chaque panel pour améliorer la lisibilité du tableau de bord.
-- Vous pouvez également personnaliser le type de visualisation de chaque panel (graphique, jauge, etc.) pour rendre les données encore plus claires et parlantes.
+- Chaque panel est nommé pour améliorer la lisibilité du tableau de bord.
+- On personnalise le type de visualisation de chaque panel (graphique, jauge, etc.) pour rendre les données encore plus claires et parlantes.
 
 ### 2.5 Sauvegarder le tableau de bord
-- Avant de sauvegarder, donnez un nom explicite à votre tableau de bord.
-- Cliquez sur `Save` pour enregistrer les modifications et finaliser la création du tableau de bord.
+- Enfin, on clique sur `Save` pour enregistrer les modifications et finaliser la création du tableau de bord.
 
 
 
