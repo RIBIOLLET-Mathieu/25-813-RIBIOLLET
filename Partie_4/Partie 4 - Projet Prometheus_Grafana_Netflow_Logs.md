@@ -171,16 +171,16 @@ Une fois la source de données configurée, nous allons créer un tableau de bor
 - Clique sur `+ > Dashboard` dans le menu latéral.
 - Clique sur `Add new panel` pour ajouter un nouveau panel. Chaque panel représente une source d'information.  
 
-### 2.2 Configurer un panel pour afficher le débit entrant
+### 2.2 Configurer un panel pour afficher le débit entrant/sortant de R1
 
 - Dans la section `Query`, sélectionnez `Prometheus` comme source de données.
-- On a entré la requête suivante pour récupérer les octets entrants : ifHCInOctets{ifDescr="GigabitEthernet2", instance="10.200.2.254"}
+- On a entré la requête suivante pour récupérer les octets entrants : ``` irate(ifHCOutOctets{ifName=~"Gi2|Gi3", instance="10.200.2.254"}[1m]) * 8 ```
+  (Note : Le * 8 à la fin permet d'avoir le débit en Mbits/s et non en Moctets/s)
 
-Cette requête permet de récupérer le volume de données entrant sur l'interface réseau `GigabitEthernet2` de l'instance `10.200.2.254`. Elle filtre les données de Prometheus pour afficher le trafic entrant sur cette interface, offrant ainsi une vue détaillée de la performance du réseau pour cet équipement.
+Cette requête permet de récupérer le volume de données entrant sur l'interface réseau `GigabitEthernet2` `GigabitEthernet3` et  de l'instance `10.200.2.254` (R1). Elle filtre les données de Prometheus pour afficher le trafic entrant sur cette interface, offrant ainsi une vue détaillée de la performance du réseau pour cet équipement.
 
-### 2.3 Ajouter un panel pour le débit sortant
-- On répète les mêmes étapes pour ajouter un nouveau panel pour le débit sortant.
-- On utilise la requête suivante pour récupérer les octets sortants : ifHCOutOctets{ifDescr="GigabitEthernet2", instance="10.200.2.253"}
+### 2.3 Ajouter un panel pour R2
+- On répète les mêmes étapes pour ajouter un panel pour le routeur R2.
 
 ### 2.4 Personnalisation des panels
 - Chaque panel est nommé pour améliorer la lisibilité du tableau de bord.
@@ -190,10 +190,9 @@ Cette requête permet de récupérer le volume de données entrant sur l'interfa
 - Enfin, on clique sur `Save` pour enregistrer les modifications et finaliser la création du tableau de bord.
 
 
-
 ### Procédure de tests 
 Afin de tester si notre service snmp-exporter collecte correctement les informations et que notre solution Prometheus+Grafana fonctionne nous allons générer du traffic depuis le réseau interne vers l'extérieur. Les graphiques de débits ("Dashboard") verront alors des données apparaître.  
-Pour simuler l'utilisation du réseau par une production cliente nous avons rédigé le script ci-dessous. Il généré 10 iperf avec différents débits aléatoires (de 1M à 5M).  
+Pour simuler l'utilisation du réseau par une production cliente nous avons rédigé le script ci-dessous. Il généré 10 iperf avec différents débits définit en début de script.  
 ```bash
 #!/bin/bash
 
@@ -202,28 +201,43 @@ Pour simuler l'utilisation du réseau par une production cliente nous avons réd
 # Adresse IP du serveur iperf3
 SERVER="192.168.141.230"
 
-# Nombre de tests
-COUNT=10
+# Durée totale du test (en secondes)
+TOTAL_DURATION=300 # 5 minutes
 
-# Durée de chaque test (en secondes)
-DURATION=30
+# Débits à appliquer à chaque intervalle
+declare -a BANDWIDTHS=("5M" "15M" "2M" "20M" "1M" "10M" "13M" "30M" "25M" "50M")
+# Durées des intervalles (en secondes)
+declare -a INTERVALS=(30 30 30 30 30 30 30 30 30 30)  # Chaque intervalle dure 30 secondes
 
 echo "Simulation d'un trafic client avec débit variable..."
 
-for i in $(seq 1 $COUNT); do
-    # Génère un débit aléatoire entre 5 et 100 Mbps
-    BANDWIDTH=$(( RANDOM % 5 + 1 ))M # 5M à 100M
+# Variable pour la gestion du temps écoulé
+temps_ecoule=0
 
-    echo "Test $i/$COUNT avec un débit simulé de $BANDWIDTH"
-    iperf3 -c "$SERVER" -b "$BANDWIDTH" -t "$DURATION"
-    echo "-------------------------------"
-    sleep 2
+# Effectuer les tests
+for i in $(seq 0 $((${#BANDWIDTHS[@]} - 1))); do
+    # Récupérer le débit et la durée pour cet intervalle
+    BANDWIDTH=${BANDWIDTHS[$i]}
+    INTERVAL=${INTERVALS[$i]}
+
+    # Afficher le test en cours
+    echo "Test $(($i + 1))/10: De $temps_ecoule s à $((temps_ecoule + INTERVAL)) s avec un débit de $BANDWIDTH"
+
+    # Exécuter iperf3 pour ce débit et cette durée
+    iperf3 -c "$SERVER" -b "$BANDWIDTH" -t "$INTERVAL" &
+
+    # Attendre la fin de l'intervalle
+    sleep $INTERVAL
+
+    # Mettre à jour le temps écoulé
+    elapsed_time=$((temps_ecoule + INTERVAL))
 done
 
 echo "Simulation terminée."
 ```
 Les informations de débits des interfaces s'affichent alors sur nos Dashboard Grafana, validant ainsi le fonctionnement de notre solution jusqu'à présent. Par exemple, voici le débit entrant et sortant observé sur l'interface GigabitEthernet2 du routeur R1. Ces débits font suite à l'éxécution du script ci-dessus.  
-![VIII-Débits des interfaces de R1](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Tests%20de%CC%81bits.png)  
+Par exemple, on voit bien que le premier pic correspond à un débit de 5Mbits/s, ce qui est spécifié dans le script.  
+![VIII-Débits des interfaces de R1]([https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Tests%20de%CC%81bits.png](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Test%20de%CC%81bits%20validation%20VIII.png))
 
 ## Dashboard - Interfaces ayant le plus de débit sur la dernière heure.
 
