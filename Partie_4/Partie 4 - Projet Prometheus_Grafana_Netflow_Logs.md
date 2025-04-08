@@ -83,7 +83,8 @@ En résumé, Prometheus, combiné avec Grafana et Alertmanager, constitue une so
 # Mise en place
 
 Nous avons déjà déployé Prometheus et Grafana à l’aide d’une solution Docker, en utilisant docker-compose. Tous les détails concernant ce déploiement sont disponibles ici : [Déploiement Prometheus/Grafana](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie_4/D%C3%A9ploiement%20de%20la%20solution.md).  
-Une fois les services en place, nous avons configuré Grafana pour qu’il utilise Prometheus comme source de données. Cela permet à Grafana de récupérer et d’afficher les métriques collectées par Prometheus à travers des tableaux de bord personnalisés.  
+
+
 
 ## SNMP Exporter - Débits des interfaces des routeurs
 Prometheus ne prend pas en charge le protocole SNMP nativement. Pour contourner cela, on utilise un composant externe appelé ```snmp-exporter```. Ce service fait office de passerelle entre SNMP et Prometheus : il interroge les équipements via SNMP, puis expose les données au format HTTP, que Prometheus peut ensuite scraper.  
@@ -154,7 +155,44 @@ scrape_configs:
         replacement: snmp-exporter:9116
 ```
 
-Une fois tous les fichiers mis à jour, nous redémarrons les services avec "docker-compose". On relance également Grafana pour qu’il prenne en compte les nouvelles données. Pour visualiser les métriques collectées, nous avons importé un dashboard simple, trouvé en ligne, dédié à la supervision SNMP.  
+Une fois tous les fichiers mis à jour, nous redémarrons les services avec "docker-compose". On relance également Grafana pour qu’il prenne en compte les nouvelles données. 
+
+Plusieurs étapes ont été suivies pour récupérer les informations de débits de nos routeurs :
+### Étape 1 : Configuration de la source de données
+La première étape consiste à **ajouter Prometheus comme source de données** dans Grafana. Cela nous permettra de visualiser et d'analyser les métriques récupérées par Prometheus directement depuis Grafana. Pour ce faire, voici les étapes à suivre :
+
+1. Accédez à `Configuration > Data Sources`.
+2. Cliquez sur `Add data source`, puis sélectionnez `Prometheus`.
+3. Entrez l'URL de votre serveur Prometheus (dans notre cas : `http://prometheus:9090`) et sauvegardez.
+
+### Étape 2 : Création du tableau de bord
+Une fois la source de données configurée, nous allons créer un tableau de bord (dashboard) pour visualiser les données collectées. Nous avons explorés les options des Dashboard Grafana et avons mise en place un affichage nous satisfaisant.
+
+### 2.1 Créer un nouveau tableau de bord
+- Cliquez sur `+ > Dashboard` dans le menu latéral.
+- Cliquez sur `Add new panel` pour ajouter un nouveau panel. Chaque panel représente une source d'information qui apparaîtra sous forme d'élément dans la grille du tableau de bord.
+
+### 2.2 Configurer un panel pour afficher le débit entrant
+
+- Dans la section `Query`, sélectionnez `Prometheus` comme source de données.
+- Entrez la requête suivante pour récupérer les octets entrants : ifHCInOctets{ifDescr="GigabitEthernet1", instance="10.200.2.254"}
+
+Cette requête permet de récupérer le volume de données entrant sur l'interface réseau `GigabitEthernet1` de l'instance `10.200.2.254`. Elle filtre les données de Prometheus pour afficher le trafic entrant sur cette interface, offrant ainsi une vue détaillée de la performance du réseau pour cet équipement.
+- Configurez l'axe Y avec l'unité `bytes/sec` pour une lecture plus pertinente des données.
+
+### 2.3 Ajouter un panel pour le débit sortant
+- Répétez les mêmes étapes pour ajouter un nouveau panel pour le débit sortant.
+- Utilisez la requête suivante pour récupérer les octets sortants : ifHCOutOctets{ifDescr="GigabitEthernet2", instance="10.200.2.253"}
+
+### 2.4 Personnalisation des panels
+- Nommez chaque panel pour améliorer la lisibilité du tableau de bord.
+- Vous pouvez également personnaliser le type de visualisation de chaque panel (graphique, jauge, etc.) pour rendre les données encore plus claires et parlantes.
+
+### 2.5 Sauvegarder le tableau de bord
+- Avant de sauvegarder, donnez un nom explicite à votre tableau de bord.
+- Cliquez sur `Save` pour enregistrer les modifications et finaliser la création du tableau de bord.
+
+
 
 ### Procédure de tests 
 Afin de tester si notre service snmp-exporter collecte correctement les informations et que notre solution Prometheus+Grafana fonctionne nous allons générer du traffic depuis le réseau interne vers l'extérieur. Les graphiques de débits ("Dashboard") verront alors des données apparaître.  
