@@ -240,14 +240,22 @@ Par exemple, on voit bien que le premier pic correspond à un débit de 5Mbits/s
 ![VIII-Débits des interfaces de R1](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Test%20de%CC%81bits%20validation%20VIII.png)
 
 ## Dashboard - Interfaces ayant le plus de débit sur la dernière heure.
+L’objectif de cette fonctionnalité est d’identifier rapidement les interfaces réseau les plus sollicitées en termes de trafic sur une période glissante d’une heure. Cela permet de surveiller les flux importants, d’anticiper les risques de saturation, et de détecter d’éventuelles anomalies ou pics d’utilisation inhabituels.  
+
+Une section dédiée a été ajoutée au dashboard afin d’afficher, sous forme de graphique, la liste des interfaces ayant généré le plus de débit (entrant et sortant) au cours de la dernière heure. Les données sont récupérées en temps réel (toutes les 5s) via des requêtes SNMP ou une API de monitoring, puis triées selon le volume de trafic mesuré.  
+
+Afin d'afficher ces informations nous avons utiliser la commande suivant :  
+```topk(4,(rate(ifHCInOctets{instance="10.200.2.254"}[1h]) + rate(ifHCOutOctets{instance="10.200.2.254"}[1h]))) * 8 ```
+Elle permet d'afficher les 4 interfaces ayant le plus de traffic (entrant et sortant) durant la dernière heure. La multiplication par 8 du résultat permet un affichage en bit/s.
+Note : Il aurait été pertinent d'afficher séparément le top du traffic entrant et sortant mais cela ne correspondait pas au cahier des charges.
+
+Ainsi nous observons le graphique suivant :
+![Classement traffic R1](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Classement%20traffic%20R1.png)
+
+On note que l'interface GigabitEthernet2 est l'interface la plus utilisée. Cette utilisation est logique et correspond à la réalité puisque c'est l'interface liée au réseau interne et donc les flux clients passent par cette dernière.
 
 
-
-
-
-
-
-
+## Dashboard - Etat VRRP
 
 
 
