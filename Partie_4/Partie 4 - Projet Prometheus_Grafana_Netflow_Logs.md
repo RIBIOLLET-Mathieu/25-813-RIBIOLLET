@@ -245,21 +245,39 @@ L’objectif de cette fonctionnalité est d’identifier rapidement les interfac
 Une section dédiée a été ajoutée au dashboard afin d’afficher, sous forme de graphique, la liste des interfaces ayant généré le plus de débit (entrant et sortant) au cours de la dernière heure. Les données sont récupérées en temps réel (toutes les 5s) via des requêtes SNMP ou une API de monitoring, puis triées selon le volume de trafic mesuré.  
 
 Afin d'afficher ces informations nous avons utiliser la commande suivant :  
-```topk(4,(rate(ifHCInOctets{instance="10.200.2.254"}[1h]) + rate(ifHCOutOctets{instance="10.200.2.254"}[1h]))) * 8 ```
-Elle permet d'afficher les 4 interfaces ayant le plus de traffic (entrant et sortant) durant la dernière heure. La multiplication par 8 du résultat permet un affichage en bit/s.
-Note : Il aurait été pertinent d'afficher séparément le top du traffic entrant et sortant mais cela ne correspondait pas au cahier des charges.
+```topk(4,(rate(ifHCInOctets{instance="10.200.2.254"}[1h]) + rate(ifHCOutOctets{instance="10.200.2.254"}[1h]))) * 8 ```  
+Elle permet d'afficher les 4 interfaces ayant le plus de traffic (entrant et sortant) durant la dernière heure. La multiplication par 8 du résultat permet un affichage en bit/s.  
+Note : Il aurait été pertinent d'afficher séparément le top du traffic entrant et sortant mais cela ne correspondait pas au cahier des charges.  
 
-Ainsi nous observons le graphique suivant :
+Ainsi nous observons le graphique suivant :  
 ![Classement traffic R1](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Classement%20traffic%20R1.png)
 
-On note que l'interface GigabitEthernet2 est l'interface la plus utilisée. Cette utilisation est logique et correspond à la réalité puisque c'est l'interface liée au réseau interne et donc les flux clients passent par cette dernière.
+On note que l'interface GigabitEthernet2 est l'interface la plus utilisée. Cette utilisation est logique et correspond à la réalité puisque c'est l'interface liée au réseau interne et donc les flux clients passent par cette dernière.  
 
 
 ## Dashboard - Etat VRRP
+Cette fonctionnalité a pour objectif d’offrir une supervision en temps réel du protocole VRRP entre les routeurs. Elle permet de s’assurer du bon fonctionnement du mécanisme de haute disponibilité, en vérifiant la répartition correcte des rôles (Master / Backup) et en détectant rapidement tout basculement ou anomalie dans le fonctionnement du protocole.
 
+Pour afficher ces informations il nous faut mettre à jour notre fichier snmp.yml afin d'y ajouter les informations du tableau "vrrpOper".  
+Le fichier snmp_yml_vrrp_update.yml est [ici](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie_4/snmp_yml_vrrp_update.md)  
 
+Après avoir modifié le fichier snmp.yml pour intégrer les informations VRRP, les conteneurs ont été redémarrés à l’aide de la commande docker afin de prendre en compte la nouvelle configuration.  
+Un nouveau panel a ensuite été créé dans Grafana, basé sur la métrique vrrpOperState.  
+Après plusieurs ajustements graphiques (suppression des colonnes non souhaitées), les données essentielles suivantes ont été sélectionnées pour l’affichage :
+- Le nom de l’équipement concerné,
+- Son état VRRP actuel : Master ou Backup.
+
+Ainsi l'affichage est le suivant :  
+![Etat VRRP R1 et R2 UP](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Etat%20VRRP%20-%20R1%20et%20R2%20UP.png)
+
+Afin de vérifier la bonne remontée et la mise à jour en temps réel des informations VRRP, un scénario de basculement a été simulé.
+L’interface GigabitEthernet2 du routeur R1 (initialement en rôle Master) a été volontairement désactivée. De ce fait, R1 devient inaccessible, et ses informations cessent d’être remontées via SNMP.
+
+Conformément au fonctionnement du protocole VRRP, le routeur R2 détecte l'absence du Master et prend automatiquement le relais en adoptant le rôle de Master. Ce comportement attendu est bien observé sur le dashboard.  
+![Etat VRRP R1 DOWN et R2 UP](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Etat%20VRRP%20-%20R1%20DOWN%20R2%20UP.png)
 
 ## Dashboard - sysUptime des routeurs
 
-Le fichier "snmp.yml", déployé plus tôt prenait déjà en compte la collecte des informations "uptime" dans routeurs, ainsi il nous a simplement fallu importer un dashboard permettant d'afficher l'uptime des équipements. Ce dashboard a été trouvé sur un GitHub (après une recherche "Dashboard uptime Github sur internet).  
-Ce tableau de bord nous permet de surveiller le système "uptime" des nos routeurs, qui indique depuis combien de temps l’équipement est en fonctionnement.  
+Le fichier snmp.yml, déjà déployé précédemment, inclut la collecte des informations relatives à l'uptime des routeurs. Il nous a donc suffi d'importer un dashboard existant pour visualiser l'uptime des équipements. Ce dashboard a été trouvé sur GitHub, suite à une recherche en ligne pour "Dashboard uptime GitHub".  
+Ce tableau de bord nous permet de surveiller l'uptime de nos routeurs, qui indique la durée pendant laquelle un équipement a été opérationnel sans interruption.L'uptime des équipements est affiché via le graphique ci-dessous :  
+![Uptime R1 et R2](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Uptime%20R1%20et%20R2.png)
