@@ -1,3 +1,4 @@
+```yml
 auths:
   public_v2:
     community: 123test123
@@ -2213,3 +2214,4 @@ modules:
         labelname: ifName
         oid: 1.3.6.1.2.1.31.1.1.1.1
         type: DisplayString
+```
