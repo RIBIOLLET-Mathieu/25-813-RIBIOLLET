@@ -281,3 +281,28 @@ Conformément au fonctionnement du protocole VRRP, le routeur R2 détecte l'abse
 Le fichier snmp.yml, déjà déployé précédemment, inclut la collecte des informations relatives à l'uptime des routeurs. Il nous a donc suffi d'importer un dashboard existant pour visualiser l'uptime des équipements. Ce dashboard a été trouvé sur GitHub, suite à une recherche en ligne pour "Dashboard uptime GitHub".  
 Ce tableau de bord nous permet de surveiller l'uptime de nos routeurs, qui indique la durée pendant laquelle un équipement a été opérationnel sans interruption.L'uptime des équipements est affiché via le graphique ci-dessous :  
 ![Uptime R1 et R2](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Uptime%20R1%20et%20R2.png)
+
+# IX - Docker web
+Dans le cadre de la mise en place d'un serveur Web Docker, il était nécessaire de créer un environnement d'hébergement pour servir trois pages Web différentes à des URL distinctes. Ce serveur doit être configuré à l'aide de Docker, ce qui permet de faciliter l'orchestration des services et d’assurer une meilleure gestion des dépendances ainsi que de la portabilité de l'application.
+
+Plusieurs objectifs :
+- Créer trois pages Web distinctes accessibles via des URL différentes.
+- Utiliser Docker et le fichier docker-compose.yml pour la configuration et la gestion des conteneurs.
+- Garantir que le serveur soit accessible à l'adresse http://localhost:800.
+- Superviser les pages web avec Prometheus et Grafana.
+
+Pour cette mise en place, le choix a été fait d’utiliser Docker et le service Apache afin de simplifier le déploiement du serveur web. Un fichier docker-compose.yml a été utilisé pour orchestrer l'ensemble des services nécessaires.  
+```yml
+version: '3.3'
+services:
+  apache:
+    container_name: my-apache-app
+    image: httpd:latest  # Utilise l'image officielle d'Apache
+    ports:
+      - '800:80'  # Redirige le port 8080 de ta machine vers le port 80 du conteneur Apache
+    volumes:
+      - '/home/etudiant/web-content:/usr/local/apache2/htdocs/'  # Chemin vers ton contenu web local
+    restart: always  # Redémarre le conteneur automatiquement en cas de panne
+```
+
+Le serveur Web Docker a été correctement configuré et déployé sur la machine A, avec un conteneur Apache servant trois pages Web différentes. Cependant, en raison de contraintes de temps, la suite du projet n'a pas pu être effectuée.
