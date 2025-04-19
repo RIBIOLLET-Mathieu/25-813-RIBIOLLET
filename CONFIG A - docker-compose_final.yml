@@ -1,0 +1,20 @@
+services:
+  web:
+    image: nginx:alpine
+    ports:
+      - "800:80"
+    volumes:
+      - /home/etudiant/web-content:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - prometheus_exporter
+
+  prometheus_exporter:
+    image: nginx/nginx-prometheus-exporter:latest
+    ports:
+      - "9113:9113"
+    environment:
+      - NGINX_STATUS_URL=http://web:80/stub_status
+    command:
+      - "--nginx.scrape-uri=http://web:80/stub_status"
+    restart: unless-stopped
