@@ -80,7 +80,7 @@ La configuration de Prometheus est flexible et permet de définir plusieurs jobs
 ## Conclusion
 En résumé, Prometheus, combiné avec Grafana et Alertmanager, constitue une solution complète et puissante pour la surveillance proactive et réactive des infrastructures et des applications. Sa flexibilité, sa scalabilité et son écosystème en constante évolution en font l'un des outils les plus populaires dans la supervision des systèmes modernes.
 
-# VIII - Mise en place
+# Mise en place
 
 Nous avons déjà déployé Prometheus et Grafana à l’aide d’une solution Docker, en utilisant docker-compose. Tous les détails concernant ce déploiement sont disponibles ici : [Déploiement Prometheus/Grafana](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Partie_4/D%C3%A9ploiement%20de%20la%20solution.md).  
 
@@ -282,27 +282,156 @@ Le fichier snmp.yml, déjà déployé précédemment, inclut la collecte des inf
 Ce tableau de bord nous permet de surveiller l'uptime de nos routeurs, qui indique la durée pendant laquelle un équipement a été opérationnel sans interruption.L'uptime des équipements est affiché via le graphique ci-dessous :  
 ![Uptime R1 et R2](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Uptime%20R1%20et%20R2.png)
 
-# IX - Docker web
-Dans le cadre de la mise en place d'un serveur Web Docker, il était nécessaire de créer un environnement d'hébergement pour servir trois pages Web différentes à des URL distinctes. Ce serveur doit être configuré à l'aide de Docker, ce qui permet de faciliter l'orchestration des services et d’assurer une meilleure gestion des dépendances ainsi que de la portabilité de l'application.
+# Docker web
+Dans le cadre de cette partie, l'objectif était de mettre en place un serveur web dans un conteneur Docker sur la machine A, capable d’héberger et de servir trois pages web différentes, chacune accessible via une URL propre. L'utilisation de Docker permet de simplifier le déploiement, de mieux gérer les dépendances, et de garantir une bonne portabilité de l'ensemble.  
 
-Plusieurs objectifs :
-- Créer trois pages Web distinctes accessibles via des URL différentes.
-- Utiliser Docker et le fichier docker-compose.yml pour la configuration et la gestion des conteneurs.
-- Garantir que le serveur soit accessible à l'adresse http://localhost:800.
-- Superviser les pages web avec Prometheus et Grafana.
+Objectifs principaux :
+- Créer trois pages web distinctes (page1.html, page2.html, page3.html), chacune accessible via une URL différente.
+- Utiliser Docker (et un fichier docker-compose.yml) pour déployer et gérer le serveur web.
+- S’assurer que le serveur est bien accessible depuis http://localhost:800.
+- Mettre en place une supervision des pages web via Prometheus et Grafana, hébergés sur une autre machine (machine B).
 
-Pour cette mise en place, le choix a été fait d’utiliser Docker et le service Apache afin de simplifier le déploiement du serveur web. Un fichier docker-compose.yml a été utilisé pour orchestrer l'ensemble des services nécessaires.  
+Pour cette mise en place, un serveur Nginx a été choisi pour héberger les pages web sur la machine A. En parallèle, un exporter Prometheus a été installé sur la même machine pour permettre la remontée des métriques. Cet exporter est identique à celui déjà utilisé sur la machine B.  
+
+La configuration a été faite à l’aide d’un fichier docker-compose.yml, qui permet de lancer à la fois le serveur web et l’exporter Prometheus de façon simple et automatisée.  
+Voici le fichier docker-compose.yml utilisé sur la machine A :
 ```yml
-version: '3.3'
 services:
-  apache:
-    container_name: my-apache-app
-    image: httpd:latest  # Utilise l'image officielle d'Apache
+  web:
+    image: nginx:alpine
     ports:
-      - '800:80'  # Redirige le port 8080 de ta machine vers le port 80 du conteneur Apache
+      - "800:80"
     volumes:
-      - '/home/etudiant/web-content:/usr/local/apache2/htdocs/'  # Chemin vers ton contenu web local
-    restart: always  # Redémarre le conteneur automatiquement en cas de panne
+      - /home/etudiant/web-content:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - prometheus_exporter
+
+  prometheus_exporter:
+    image: nginx/nginx-prometheus-exporter:latest
+    ports:
+      - "9113:9113"
+    environment:
+      - NGINX_STATUS_URL=http://web:80/stub_status
+    command:
+      - "--nginx.scrape-uri=http://web:80/stub_status"
+    restart: unless-stopped 
 ```
 
-Le serveur Web Docker a été correctement configuré et déployé sur la machine A, avec un conteneur Apache servant trois pages Web différentes. Cependant, en raison de contraintes de temps, la suite du projet n'a pas pu être effectuée.
+Afin de mettre en place la supervision des pages web hébergées sur la machine A, il a été nécessaire de compléter la configuration Docker avec l’ajout du service Blackbox Exporter, un outil utilisé par Prometheus pour tester la disponibilité d’un service externe (comme une page web).  
+
+Pour cela, le fichier docker-compose.yml a été mis à jour en ajoutant une nouvelle section dédiée à blackbox-exporter. Ce conteneur expose un port (9115) qui sera utilisé par Prometheus pour interroger les pages web et vérifier qu'elles répondent correctement.   
+```yml
+  blackbox-exporter:
+    image: prom/blackbox-exporter
+    ports:
+      - "9115:9115"
+    restart: unless-stopped
+```
+Une fois ce conteneur en place, il a fallu adapter le fichier prometheus.yml afin d’ajouter deux nouveaux "jobs" de supervision :  
+- Un premier pour superviser Nginx directement (sur le port 9113).
+- Un second pour superviser les trois pages web hébergées (page1.html, page2.html et page3.html) en passant par Blackbox Exporter.
+```yml
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['10.200.2.10:9113']
+  - job_name: 'check-pages'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]  # Vérifie que la page répond avec un code HTTP 2xx
+    static_configs:
+      - targets:
+        - http://10.200.2.10:800/page1.html
+        - http://10.200.2.10:800/page2.html
+        - http://10.200.2.10:800/page3.html
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+```
+Cette configuration permet à Prometheus de sonder régulièrement les pages web via des requêtes HTTP, de récupérer leur statut (code de réponse, temps de réponse, etc.), et de transmettre ces données à Grafana. Côté Grafana, deux dashboards ont été créés :  
+- Un pour la supervision générale de la machine A (CPU, RAM, charge, etc.).
+- Un autre pour la supervision du serveur web et des pages, avec notamment l'état de chaque page, les codes HTTP renvoyés, et le temps de réponse.
+
+Ces éléments permettent un suivi en temps réel de la disponibilité et du bon fonctionnement du service web.  
+Les trois pages web (page1.html, page2.html, page3.html) ont été créées en amont et placées dans le répertoire adéquat sur la machine A, à l’endroit exact où pointe la configuration du serveur web Nginx.  
+
+Une fois la solution déployée, il est important de la tester pour vérifier son bon fonctionnement. Pour cela, nous suivons une procédure simple en plusieurs étapes :
+1) Tests de la disponibilité des pages webs :    
+   L’objectif ici est de s’assurer que les pages sont bien accessibles via HTTP.  
+   Pour ce faire, il suffit de se rendre dans le navigateur de notre machine personnelle et de tester les URLs suivantes :  
+   ```html
+   http://192.168.141.117:800/page1.html
+   http://192.168.141.117:800/page2.html
+   http://192.168.141.117:800/page3.html
+   ```
+   > Si le contenu des pages (par exemple, "Ceci est la page1") s’affiche correctement, cela valide cette étape.
+
+2) Vérification des dashboards Grafana  
+   L’objectif ici est de s’assurer que la supervision des services via Prometheus et Grafana fonctionne correctement.
+   Pour cela, il faut se connecter à Grafana et vérifier que les dashboards créés remontent bien les informations suivantes :
+   - Le statut du serveur NGINX.
+   - Le nombre de requêtes traitées par le serveur NGINX.
+   - Le nombre de sessions actives vers les pages web.
+   - L’état de l'accès aux pages web.
+
+   Voici à quoi ressemble le dashboard Grafana qui rassemble ces informations :
+   ![Supervision NGNX et web](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Dashboard%20NGINX%20%2B%20WEB.png)
+
+   Pour vérifier que les bonnes informations sont bien récupérées, un test de résilience a été effectué en désactivant le service NGINX sur la machine A. Cela a permis d'observer que, pendant un     court moment vers 13h00, le service NGINX était "DOWN", ce qui a bien été reflété sur le dashboard. Ce genre de test permet de s’assurer que la supervision réagit correctement aux pannes.
+   En plus de la supervision du serveur web, nous avons également supervisé le système de la machine A pour obtenir des métriques telles que :
+   - L’utilisation du CPU et de la RAM.
+   - Les paquets entrants et sortants sur l'interface réseau "WAN" (ici enp0s8).
+
+   Voici le dashboard Grafana dédié à la supervision système de la machine A :
+   ![Supervision systèmes A](https://github.com/RIBIOLLET-Mathieu/25-813-RIBIOLLET/blob/main/Dashboard%20syste%CC%80me%20machine%20A.png)
+
+Pour automatiser ces tests, un script bash a été créé. Il est exécuté sur la machine B, qui est chargée de tester l’accès aux pages et de vérifier la remontée des données dans Prometheus.  
+Voici le script utilisé pour effectuer les tests automatiquement :
+```bash
+#!/bin/bash
+
+SERVER="http://10.200.2.10:800"
+PAGES=("page1.html" "page2.html" "page3.html")
+
+echo "=== TEST DES PAGES WEB ==="
+for page in "${PAGES[@]}"; do
+    url="$SERVER/$page"
+    echo -n "Test de $url ... "
+    http_code=$(curl -o /dev/null -s -w "%{http_code}" "$url")
+    if [ "$http_code" == "200" ]; then
+        echo "✅ OK (200)"
+    else
+        echo "❌ Erreur ($http_code)"
+    fi
+done
+
+echo ""
+echo "=== TEST DE PROMETHEUS ==="
+PROM_URL="http://192.168.141.230:80/api/v1/targets"
+status=$(curl -s "$PROM_URL" | grep -o '"health":"up"' | wc -l)
+if [ "$status" -ge 1 ]; then
+    echo "✅ Prometheus reçoit des données."
+else
+    echo "❌ Aucune cible 'up' détectée dans Prometheus."
+fi
+
+```
+
+Une fois ce script exécuté, les résultats obtenus étaient les suivants :
+```bash
+=== TEST DES PAGES WEB ===
+Test de http://10.200.2.10:800/page1.html ... ✅ OK (200)
+Test de http://10.200.2.10:800/page2.html ... ✅ OK (200)
+Test de http://10.200.2.10:800/page3.html ... ✅ OK (200)
+
+=== TEST DE PROMETHEUS ===
+✅ Prometheus reçoit des données.
+```
+Ces résultats montrent que les pages sont accessibles (code HTTP 200) et que Prometheus récupère bien les informations de supervision des services.
+
+# Netflow
+Cette dernière partie n'a pas eu être réalisé par manque de temps. Le fait d'être tout seul pour ce projet a également demandée plus de temps sur les autres parties.
